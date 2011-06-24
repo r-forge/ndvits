@@ -1,0 +1,40 @@
+"BfastDec"=function(TS,Ystart,period,param=c(),fileout=FALSE,...)
+{
+if (! require(bfast))
+	{ return()}
+#set value by default if not defined
+if (is.null(param$season))
+param$season="harmonic"
+if (is.null(param$h))
+param$h=period*2/(length(as.numeric(TS[1,])))
+#param$h=10/length(TS[1,])
+if (is.null(param$maxi))
+param$maxi=10
+if (fileout != FALSE)
+{
+pdf(fileout)
+}
+else{
+par(ask=TRUE)
+}
+seas=list()
+trend=list()
+#compute bfast decomposition : takes time !
+for (i in 1:length(TS[,1]))
+{
+fit=bfast(ts(as.numeric(TS[i,]),start=Ystart,freq=period),h=param$h, season=param$season, max.iter=param$maxi,...)
+plot(fit)
+#seasonal breakpoints
+seas=c(seas,Ystart+as.numeric(fit$output[[1]]$bp.Wt$breakpoints)/period)
+#trend breakpoints
+trend=c(trend,Ystart+as.numeric(fit$output[[1]]$bp.Vt$breakpoints)/period)
+}
+if (fileout != FALSE)
+{
+dev.off()
+}
+res=c()
+res$seas=seas
+res$trend=trend
+return(res)
+}
