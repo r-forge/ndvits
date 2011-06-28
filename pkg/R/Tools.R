@@ -130,21 +130,18 @@ function (ndvidirectory, region, year, month, period, type)
     }
     if (toupper(type) == "GIMMS") {
         if (period > 2) {
-            print("error gimms data are bimensual.")
+            print("Error gimms data are bimensual.")
         }
         else {
             files = list.files(path = paste(ndvidirectory, ".", 
                 sep = ""))
             n = 1
             i = 2 * (month - 1) + period
-            filein = paste(region, substr(as.character(year), 
-                3, 4), filedate[i], ".", codef[n], ".tif", sep = "")
-            while (!(filein %in% files)) {
+            filein = paste(ndvidirectory, region, substr(as.character(year), 3, 4), filedate[i], ".", codef[n], ".tif", sep = "")
+            while (!(filein %in% paste(ndvidirectory,files,sep=""))) {
                 if (n < 7) {
                   n = n + 1
-                  filein = paste(region, substr(as.character(year), 
-                    3, 4), filedate[i], ".", codef[n], ".tif", 
-                    sep = "")
+                  filein = paste(ndvidirectory, region, substr(as.character(year), 3, 4), filedate[i], ".", codef[n], ".tif", sep = "")
                 }
                 else {
                   print(paste("Maps for ", as.character(year), 

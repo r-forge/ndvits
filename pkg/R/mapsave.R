@@ -78,6 +78,8 @@ function (listfiles, names, namefile, org, ext = "show", main = "maps",
 function (map, obj = NULL, shapedir = NULL, ext = "show", namefile = "map", 
     pal = "Spectral", objext = "shp", label = FALSE) 
 {
+    sc=mean(apply(bbox(map),1,diff))
+    arrow = list("SpatialPolygonsRescale", layout.north.arrow(),offset = c(bbox(map)[1,2]-(sc/10), bbox(map)[2,2]-(sc/10)), scale = sc/15)
     if (typeof(obj) == "character") {
         if (objext == "shp") {
             Bound = readOGR(paste(shapedir, ".", sep = ""), obj)
@@ -91,23 +93,27 @@ function (map, obj = NULL, shapedir = NULL, ext = "show", namefile = "map",
                 data = as.data.frame(Bound[label]))
         }
         if (length(grep("oint", class(Bound))) > 0) {
-            lay = list("sp.points", Bound, cex = 0.75, pch = 3, 
+            pt = list("sp.points", Bound, cex = 0.75, pch = 3, 
                 col = "black", first = FALSE)
             if (label != FALSE) {
                 txt = list("sp.text", coordinates(Bound) - 0.01, 
                   Bound[[label]], first = FALSE)
-                lay = list(lay, txt)
+                lay = list(arrow, pt, txt)
+            }
+            else {
+            lay = list(arrow,pt)
             }
         }
         else {
             if (length(grep("olygon", class(Bound))) > 0) {
-                lay = list("sp.polygons", Bound, cex = 0.75, 
+                pol = list("sp.polygons", Bound, cex = 0.75, 
                   pch = 3, col = "black", first = FALSE)
+                lay = list(arrow,pol)
             }
         }
     }
     else {
-        lay = list()
+        lay = list(arrow)
     }
     if (ext == "jpg" || ext == "jpeg") {
         jpeg(paste(namefile, ".jpg", sep = ""), quality = 90)

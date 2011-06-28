@@ -1,102 +1,29 @@
 \name{AnnualAnomaly}
 \alias{AnnualAnomaly}
-\title{
-Annual Anomaly
-}
+\title{Annual Maximum Anomaly}
 \description{
-The function AnnualAnomaly compute the anomaly map of the difference of the maximum of each year with their mean.
+The function AnnualAnomaly compute the anomaly map of the difference between the maximum of each year and their mean.
 }
 \usage{
-AnnualAnomaly(ndvidirectory, region, Ystart, Yend, ext = "show", namefile = "anomaly", xlim = NULL, ylim = NULL, obj = NULL, objdir = NULL, objext = "shp", label = FALSE, pal = "Spectral")
+AnnualAnomaly(ndvidirectory, region, Ystart, Yend, ext = "show", namefile = "anomaly", xlim = NULL, ylim = NULL, type="VITO_CLIP", obj = NULL, objdir = NULL, objext = "shp", label = FALSE, pal = "Spectral")
 }
 \arguments{
   \item{ndvidirectory}{directory of the ndvi files}
   \item{region}{name of the region}
   \item{Ystart}{year of start of the analysis}
   \item{Yend}{year of end}
-  \item{ext}{
-%%     ~~Describe \code{ext} here~~
-}
-  \item{namefile}{prefixe of the name of the file. By default namefile="anomaly"
-}
-  \item{xlim}{
-%%     ~~Describe \code{xlim} here~~
-}
-  \item{ylim}{
-%%     ~~Describe \code{ylim} here~~
-}
-  \item{obj}{
-%%     ~~Describe \code{obj} here~~
-}
-  \item{objdir}{
-%%     ~~Describe \code{objdir} here~~
-}
-  \item{objext}{
-%%     ~~Describe \code{objext} here~~
-}
-  \item{label}{
-%%     ~~Describe \code{label} here~~
-}
-  \item{pal}{
-%%     ~~Describe \code{pal} here~~
-}
+  \item{ext}{extension of the map}
+  \item{namefile}{prefixe of the name of the file. By default namefile="anomaly"}
+  \item{xlim}{longitude of the desired area}
+  \item{ylim}{latitude of the desired area}
+  \item{type}{type of data : GIMMS, VITO_VGT or VITO_CLIP}
+  \item{obj}{shapefile to draw on the map}
+  \item{objdir}{direction of the shapefile to draw on the map}
+  \item{objext}{extension of the shapefile ("shp" or "kml"}
+  \item{label}{name of the label of the points. If label=FALSE, the label will not be plotted. By default, label=FALSE.}
+  \item{pal}{palette of colors used to make the map (see note 1.5 : choosing the palette). By default, pal="Spectral".}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+The map of the max of each year between \verb{Ystart} and \verb{Yend} is computed. Then, the mean is calculated.  The anomaly map comes from the difference between the mean of the max and the max of the specific year.  It is saved automatically in geotiff and displayed by default (show=TRUE) in the graphic of R.  To go from one graph to another, click on the graph or press enter in the R console.
 }
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function(ndvidirectory,region,Ystart,Yend,ext="show",namefile="anomaly",xlim=NULL,ylim=NULL,obj=NULL,objdir=NULL,objext="shp",label=FALSE,pal="Spectral")
-{
-#computing the max per year
-dat=c()
-tab=c()
-for (year in seq(Ystart, Yend, 1))
-{
-dat=cbind(dat,mapmaxyearVito(ndvidirectory,region,year,xlim,ylim)$band1)
-colnames(dat)=c(colnames(dat)[-length(dat[1,])],as.character(year))
-  }
-#calculating the mean of the max
-Mean=apply(dat,1,meanNA)
-#computing anomalies:
-tp=timetoMap(ndvidirectory,region,Ystart,1,0,xlim,ylim)
-par(ask=TRUE)
-for (year in seq(Ystart, Yend, 1))
-{
-tp$band1=dat[,as.character(year)]-Mean
-writeGDAL(tp,paste(namefile,as.character(year),".tif",sep=""),drivername="GTiff", type="Int16",mvFlag=-32768)
-#save the image
-savemap(tp,obj,objdir,ext,paste(namefile,as.character(year),sep=""),pal,objext,label)
-  }
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\author{Romain Frelat and Bruno Gerard}
