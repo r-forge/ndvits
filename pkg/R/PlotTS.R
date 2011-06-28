@@ -1,66 +1,79 @@
-PlotTS=function(TS,fileout=FALSE,Ystart,period,title="NDVI time series")
+"OverlayTS" <-
+function (TS, Ystart, period = 36, title = "NDVI Time Series", 
+    outfile = FALSE) 
 {
-liM=max(TS)
-lim=min(TS)
-if(fileout!=FALSE)
-{
-pdf(fileout)
+    if (outfile != FALSE) {
+        pdf(outfile)
+    }
+    liM = max(TS)
+    lim = min(TS) - 0.1
+    if (dim(as.data.frame(TS))[2] > 1) {
+        plot(ts(TS[1, ], start = Ystart, freq = period), main = title, 
+            ylab = "NDVI", ylim = c(lim, liM), col = rainbow(1)[1])
+        for (i in 2:length(TS[, 1])) lines(ts(TS[i, ], start = Ystart, 
+            freq = period), col = rainbow(length(TS[, 1]))[i])
+        legend("bottomright", legend = rownames(TS), lwd = 2, 
+            col = rainbow(length(TS[, 1])))
+    }
+    else {
+        print("Only one time series : no overlay possible.")
+    }
+    if (outfile != FALSE) {
+        dev.off()
+    }
 }
-if (length(TS[,1])<7)
+"PlotTS" <-
+function (TS, fileout = FALSE, Ystart, period, title = "NDVI time series") 
 {
-par(mfrow=c(length(TS[,1]),1),mar=c(0,4.1,0,2.1),oma=c(8,2,8,2))
-for (i in 1:length(TS[,1]))
-{
-#alternate y axes :
-plot(ts(as.numeric(TS[i,]),start=Ystart,freq=period),ylim=c(lim,liM),type="l", xlab="",xaxt="n", ,yaxt="n",ylab="")
-axis(side=ifelse(i%%2==1,2,4),at=seq(round(lim,1),round(liM,1),0.1),labels=seq(round(lim,1),round(liM,1),0.1))
-mtext("NDVI", side=ifelse(i%%2==1,2,4), line= 3,cex=0.7)
-text((Ystart+length(TS[1,])/(2*period)),liM-0.025,rownames(TS)[i],xpd="NA",cex=1)
-}
-axis(side=1,at=seq(Ystart,2009,1),labels=seq(Ystart,2009,1))
-mtext(title, side=3, line= 3,outer=T)
-}
-else
-{
-par(mfrow=c(5,1),mar=c(0,4.1,0,2.1),oma=c(8,2,8,2))
-if(fileout==FALSE)
-{
-par(ask=TRUE)
-}
-for (i in 1:length(TS[,1]))
-{
-plot(ts(as.numeric(TS[i,]),start=Ystart,freq=period),ylim=c(lim,liM),type="l", xlab="",xaxt="n", ,yaxt="n",ylab="")
-axis(side=ifelse(i%%2==1,2,4),at=seq(round(lim,1),round(liM,1),0.1),labels=seq(round(lim,1),round(liM,1),0.1))
-mtext("NDVI", side=ifelse(i%%2==1,2,4), line= 3,cex=0.7)
-text((Ystart+length(TS[1,])/(2*period)),liM-0.025,rownames(TS)[i],xpd="NA",cex=1)
-if (i%%5==0 || i==length(TS[,1]))
-{
-axis(side=1,at=seq(Ystart,2009,1),labels=seq(Ystart,2009,1))
-mtext(title, side=3, line= 3,outer=T)
-}
-}
-}
-if(fileout!=FALSE)
-{
-dev.off()
-}
-}
-
-OverlayTS=function(TS,Ystart,period=36,title="NDVI Time Series",outfile=FALSE)
-{
-if (outfile != FALSE)
-{pdf(outfile)}
-liM=max(TS)
-lim=min(TS)-0.1
-if (dim(as.data.frame(TS))[2]>1)
-{
-plot(ts(TS[1,],start=Ystart,freq=period),main=title,ylab="NDVI",ylim=c(lim,liM),col=rainbow(1)[1])
-for (i in 2:length(TS[,1]))
-lines(ts(TS[i,],start=Ystart,freq=period),col=rainbow(length(TS[,1]))[i])
-legend("bottomright",legend = rownames(TS),lwd = 2,col=rainbow(length(TS[,1])))
-} else {
-print("Only one time series : no overlay possible.")
-}
-if (outfile != FALSE)
-{dev.off()}
+    liM = max(TS)
+    lim = min(TS)
+    if (fileout != FALSE) {
+        pdf(fileout)
+    }
+    if (length(TS[, 1]) < 7) {
+        par(mfrow = c(length(TS[, 1]), 1), mar = c(0, 4.1, 0, 
+            2.1), oma = c(8, 2, 8, 2))
+        for (i in 1:length(TS[, 1])) {
+            plot(ts(as.numeric(TS[i, ]), start = Ystart, freq = period), 
+                ylim = c(lim, liM), type = "l", xlab = "", xaxt = "n", 
+                , yaxt = "n", ylab = "")
+            axis(side = ifelse(i%%2 == 1, 2, 4), at = seq(round(lim, 
+                1), round(liM, 1), 0.1), labels = seq(round(lim, 
+                1), round(liM, 1), 0.1))
+            mtext("NDVI", side = ifelse(i%%2 == 1, 2, 4), line = 3, 
+                cex = 0.7)
+            text((Ystart + length(TS[1, ])/(2 * period)), liM - 
+                0.025, rownames(TS)[i], xpd = "NA", cex = 1)
+        }
+        axis(side = 1, at = seq(Ystart, 2009, 1), labels = seq(Ystart, 
+            2009, 1))
+        mtext(title, side = 3, line = 3, outer = T)
+    }
+    else {
+        par(mfrow = c(5, 1), mar = c(0, 4.1, 0, 2.1), oma = c(8, 
+            2, 8, 2))
+        if (fileout == FALSE) {
+            par(ask = TRUE)
+        }
+        for (i in 1:length(TS[, 1])) {
+            plot(ts(as.numeric(TS[i, ]), start = Ystart, freq = period), 
+                ylim = c(lim, liM), type = "l", xlab = "", xaxt = "n", 
+                , yaxt = "n", ylab = "")
+            axis(side = ifelse(i%%2 == 1, 2, 4), at = seq(round(lim, 
+                1), round(liM, 1), 0.1), labels = seq(round(lim, 
+                1), round(liM, 1), 0.1))
+            mtext("NDVI", side = ifelse(i%%2 == 1, 2, 4), line = 3, 
+                cex = 0.7)
+            text((Ystart + length(TS[1, ])/(2 * period)), liM - 
+                0.025, rownames(TS)[i], xpd = "NA", cex = 1)
+            if (i%%5 == 0 || i == length(TS[, 1])) {
+                axis(side = 1, at = seq(Ystart, 2009, 1), labels = seq(Ystart, 
+                  2009, 1))
+                mtext(title, side = 3, line = 3, outer = T)
+            }
+        }
+    }
+    if (fileout != FALSE) {
+        dev.off()
+    }
 }

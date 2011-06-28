@@ -7,11 +7,11 @@ Extracting annual phenological metrics
 This function extracts annual phenological metrics
 }
 \usage{
-AnnualPhenologicalMetrics(TS, fileout, outgraph, Ystart, period, SOSth = 0.5, EOSth = 0.5)
+AnPhenoMetrics(TS, outfile, outgraph, Ystart, period, SOSth = 0.5, EOSth = 0.5)
 }
 \arguments{
   \item{TS}{time serie or matrix of time serie containing only NDVI data (can be a single time series or multiple). }
-  \item{fileout}{ txt file where metrics are saved. }
+  \item{outfile}{ txt file where metrics are saved. }
   \item{outgraph}{pdf file where graph will be saved.}
   \item{Ystart}{start year of the ndvi data.}
   \item{period}{number of observations per year (for vito: period=36, gimms: period=24).}
