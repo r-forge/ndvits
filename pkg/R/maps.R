@@ -61,7 +61,7 @@ function (ndvidirectory, region, Ystart, Yend, xlim = NULL, ylim = NULL,type="VI
 }
 "mapmaxyear" <-
 function (ndvidirectory, region, year, xlim = NULL, ylim = NULL, 
-    fileout = FALSE,type="VITO_CLIP") 
+    fileout = FALSE, type="VITO_CLIP") 
 {
     while (!toupper(type) %in% c("GIMMS", "VITO_CLIP", "VITO_VGT")) {
         type = readline(cat("Type is not correct. Please choose between GIMMS, VITO_CLIP and VITO_VGT. \n"))

@@ -1,15 +1,10 @@
 \name{multimap}
 \alias{multimap}
-\title{
-Display multi map.
-}
-\description{
-Display multi map in R.
-}
+\title{Display multi-map.}
+\description{Display multi map in R.}
 \usage{
 multimap(listfiles, names, namefile, org, ext = "show", main = "maps", obj = NULL, objdir = NULL, pal = "Spectral", objext = "shp", ...)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{listfiles}{vector with names and directory of maps to be plotted together (better to load geotiff files).}
   \item{names}{names of the different maps (display at the top of them).}
@@ -23,8 +18,7 @@ if  \verb{obj=NULL}, no object will be added to the anomaly maps. By default, \v
   \item{pal}{palette of colors used to make the map (see note 1.5 : choosing the palette)}
   \item{objext}{objext : extension of the objects ("shp" or "kml")
 By default, \verb{objext="shp"}}
+  \item{\dots}{optional arguments send to spplot}
 }
-\author{
-Romain Frelat and Bruno Gerard.
-}
+\author{Romain Frelat and Bruno Gerard.}
 

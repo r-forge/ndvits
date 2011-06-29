@@ -24,6 +24,7 @@ parameters for Bfast decomposition
 file where graphs are saved (extension "pdf")\\
 If fileout=FALSE, the graphs are shown in R. By default, fileout=FALSE.
 }
+  \item{\dots}{optional arguments send to Bfast function}
 }
 \value{
 to be explained

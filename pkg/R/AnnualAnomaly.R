@@ -10,7 +10,7 @@ function (ndvidirectory, region, Ystart, Yend, ext = "show", namefile = "anomaly
     tab = c()
     for (year in seq(Ystart, Yend, 1)) {
         dat = cbind(dat, mapmaxyear(ndvidirectory, region, 
-            year, xlim, ylim, type)$band1)
+            year, xlim, ylim, type=type)$band1)
         colnames(dat) = c(colnames(dat)[-length(dat[1, ])], as.character(year))
     }
     Mean = apply(dat, 1, meanNA)

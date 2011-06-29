@@ -13,6 +13,8 @@ function (listfiles, names, namefile, org, ext = "show", main = "maps",
     }
     colnames(dat) = listfiles
     im2 = SpatialGridDataFrame(im, data = as.data.frame(dat))
+    sc=mean(apply(bbox(im),1,diff))
+    arrow = list("SpatialPolygonsRescale", layout.north.arrow(), offset = c(bbox(im)[1,2]-(sc/5), bbox(im)[2,2]-(sc/5)), scale = sc/7, which = org[1]*org[2], first = FALSE)
     if (typeof(obj) == "character") {
         if (objext == "shp") {
             Bound = readOGR(paste(objdir, ".", sep = ""), obj)
@@ -23,21 +25,21 @@ function (listfiles, names, namefile, org, ext = "show", main = "maps",
         if (length(grep("oint", class(Bound))) > 0) {
             lay = list("sp.points", Bound, cex = 0.75, pch = 3, 
                 col = "black", first = FALSE)
-            spl = list(lay)
+            spl = list(lay,arrow)
         }
         else {
             if (length(grep("olygon", class(Bound))) > 0) {
                 lay = list("sp.polygons", Bound, cex = 0.75, 
                   pch = 3, col = "black", first = FALSE)
-                spl = list(lay)
+                spl = list(lay,arrow)
             }
             else {
-                spl = list()
+                spl = list(arrow)
             }
         }
     }
     else {
-        spl = list()
+        spl = list(arrow)
     }
     if (ext == "jpg" || ext == "jpeg") {
         jpeg(paste(namefile, ".jpg", sep = ""), quality = 90)

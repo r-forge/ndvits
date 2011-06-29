@@ -1,8 +1,18 @@
 "pointtobuffer" <-
-function (shapefile, shapedir, ndvidirectory, region, Ystart, 
+function (shapefile, shapedir, ndvidirectory, region, Ystart, ext ="shp",
     nameshape = "buffer", dirshape = ".", rad = 1) 
 {
-    inPoints = readOGR(shapedir, shapefile)
+    while (!tolower(ext) %in% c("shp", "kml")) {
+        ext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
+        if (ext == "") 
+            return()
+    }
+    if (ext == "shp") {
+        inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
+    }
+    else {
+        inPoints = readOGR(shapedir, shapefile)
+    }
     if (dim(coordinates(inPoints))[2] > 2) {
         inPoints = SpatialPointsDataFrame(coords = coordinates(inPoints)[, 
             1:2], proj4string = CRS(proj4string(inPoints)), data = as.data.frame(inPoints[names(inPoints)]))

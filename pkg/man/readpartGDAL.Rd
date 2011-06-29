@@ -21,6 +21,7 @@ If nothing enter (xlim=NULL), the map is load entirely.
 latitude of the area to load.\cr
 If nothing enter (xlim=NULL), the map is load entirely.
 }
+  \item{\dots}{optional arguments send to readGDAL}
 }
 \value{
 Returns the map of the desired area.
