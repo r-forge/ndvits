@@ -12,7 +12,7 @@ TimeSeriesAnalysis(shapefile, shapedir, ndvidirectory, region, Ystart, Yend, out
 \arguments{
   \item{shapefile}{
 name of the shapefile (multipoints or polygons).\cr
-For a shapefile called "name.shp" or a kml file called "name.kml", write "name"
+For a shapefile called "name.shp" or a kml file called "name.kml", write "name".
 }
   \item{shapedir}{
 direction of the folder containing the shapefile.

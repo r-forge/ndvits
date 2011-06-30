@@ -9,7 +9,7 @@ function (ndvidirectory, region, Ystart, Yend, period = 36, namefile = "anomaly"
     if (length(period) == 1) {
         period = 0:period - 1
     }
-    Mean = maplocalstatVito(ndvidirectory, region, Ystart, Yend, 
+    Mean = maplocalstat(ndvidirectory, region, Ystart, Yend, 
         xlim, ylim)$mean
     par(ask = T)
     for (i in period) {

@@ -14,14 +14,9 @@ PlotTS(TS, fileout = FALSE, Ystart, period, title = "NDVI time series")
   \item{fileout}{file where to save the graph. If FALSE (value by default), plot are shown in R.}
   \item{Ystart}{start year of the time series.}
   \item{period}{number of observations per year (for vito: period=36, for gimms: period=24).}
-  \item{title}{ title of the graphs. By default, title="NDVI time series".}
-}
-\references{
-%% ~put references to the literature/web site here ~
+  \item{title}{title of the graphs. By default, title="NDVI time series".}
 }
 \author{
 Romain Frelat and Bruno Gerard
 }
 
-\examples{
-}

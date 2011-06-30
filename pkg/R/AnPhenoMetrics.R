@@ -23,7 +23,7 @@ function (TS, outfile, outgraph=FALSE, Ystart, period, SOSth = 0.5,
         rownames(year) = Ystart:(Ystart + length(year[, 1]) - 
             1)
         meanC = apply(year, 2, mean)
-        plot(meanC, ylim = c(0, liM), type = "l", xlab = "time", 
+        plot(meanC, ylim = c(lim-0.1, liM), type = "l", xlab = "time", 
             ylab = "NDVI", xaxt = "n", main = paste(rownames(TS)[j], 
                 "NDVI Annual Time Series"), lwd = 3)
         axis(side = 1, at = seq(1, period, period/12), labels = month.abb)
@@ -68,9 +68,9 @@ function (TS, outfile, outgraph=FALSE, Ystart, period, SOSth = 0.5,
             Mm = max(meanC)
             SOStm = min(meanC) + SOSth * (Mm - min(meanC))
             SOSm = mdm + which(meanC[mdm:Mdm] > SOStm)[1] - 1
-            abline(v = c(Mdm, mdm), lty = 2)
-            text(mdm, -0.1, "min", xpd = "NA", cex = 1.2)
-            text(Mdm, -0.1, "max", xpd = "NA", cex = 1.2)
+            #abline(v = c(Mdm, mdm), lty = 2)
+            #text(mdm, -0.1, "min", xpd = "NA", cex = 1.2)
+            #text(Mdm, -0.1, "max", xpd = "NA", cex = 1.2)
             for (i in 1:(length(year[, 1]) - 1)) {
                 t = c(year[i, ], year[i + 1, 1:16])
                 M = max(t)
@@ -169,7 +169,7 @@ function (TS, outfile, outgraph=FALSE, Ystart, period, SOSth = 0.5,
                 }
                 else {
                   t = c(year[i + yst, st:period], year[i + ((yed + 
-                    yst)/2)], year[i + yed, 1:ed])
+                    yst)/2),], year[i + yed, 1:ed])
                 }
                 #finding key date in the season
                 M1 = max(t[(Mdm + st - 2 * (period/12)):(Mdm + 
@@ -196,14 +196,14 @@ function (TS, outfile, outgraph=FALSE, Ystart, period, SOSth = 0.5,
                 SOS1t = ml1 + SOSth * (M1 - ml1)
                 SOS1 = mld1 + which(t[mld1:Md1] > SOS1t)[1] - 1
                 EOS1t = ml2 + EOSth * (M1 - ml2)
-                EOS1 = Md1 + which(t[Md1:mld2] < EOS1t)[1] - 1
+                EOS1 = Md1 + which(t[Md1:mld2] < EOS1t)[1] - 2
                 LOS1 = EOS1 - SOS1
                 cumNDVI1 = sum(t[EOS1:SOS1])
                 #calculate metrics season 2
                 SOS2t = ml2 + SOSth * (M2 - ml2)
                 SOS2 = mld2 + which(t[mld2:Md2] > SOS2t)[1] - 1
                 EOS2t = mr + EOSth * (M2 - mr)
-                EOS2 = Md2 + which(t[Md2:mrd] < EOS2t)[1] - 1
+                EOS2 = Md2 + which(t[Md2:mrd] < EOS2t)[1] - 2
                 LOS2 = EOS2 - SOS2
                 cumNDVI2 = sum(t[EOS2:SOS2])
                 plot(1:length(t), t, type = "l", 
@@ -211,8 +211,7 @@ function (TS, outfile, outgraph=FALSE, Ystart, period, SOSth = 0.5,
                   ylab = "SG filtered NDVI", main = paste(rownames(TS)[j], 
                     "NDVI Series", rownames(year)[i], "-", rownames(year)[i + 
                       1]))
-                axis(side = 1, at = seq(1, (period + 4*period+1), period/12), 
-                  labels = rep(month.abb, 2)[((st*12)%/%period):((ed*12)%/%period+12)])
+                axis(side = 1, at = seq(((st*12)%%period)/12+1, 16*period/12,period/12), labels = rep(month.abb, 2)[((st*12)%/%period+1):((ed*12)%/%period+12)])
                 points(x = Md1, y = M1, col = "green", pch = 3)
                 points(x = mld1, y = ml1, col = "red", pch = 3)
                 points(x = Md2, y = M2, col = "green", pch = 3)

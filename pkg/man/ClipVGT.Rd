@@ -1,101 +1,45 @@
 \name{ClipVGT}
 \alias{ClipVGT}
 \title{
-Clip VGT data
+Clip Vegetation data
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Clip the original map over a define rectangle.
+This operation reduce the size of the map and the time to load it.
 }
 \usage{
 ClipVGT(ndvidirectory, region, xlim, ylim, Ystart, Yend, outdirectory, regionout)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{ndvidirectory}{
-%%     ~~Describe \code{ndvidirectory} here~~
-}
-  \item{region}{
-%%     ~~Describe \code{region} here~~
-}
-  \item{xlim}{
-%%     ~~Describe \code{xlim} here~~
-}
-  \item{ylim}{
-%%     ~~Describe \code{ylim} here~~
-}
-  \item{Ystart}{
-%%     ~~Describe \code{Ystart} here~~
-}
-  \item{Yend}{
-%%     ~~Describe \code{Yend} here~~
-}
-  \item{outdirectory}{
-%%     ~~Describe \code{outdirectory} here~~
-}
-  \item{regionout}{
-%%     ~~Describe \code{regionout} here~~
-}
+  \item{ndvidirectory}{directory of the original ndvi files}
+  \item{region}{name of the region (as coded in the name of the file}
+  \item{xlim}{longitude of the desired area}
+  \item{ylim}{latitude of the desired area}
+  \item{Ystart}{year of start of the clipping process}
+  \item{Yend}{year of start of the clipping process}
+  \item{outdirectory}{directory where to save the clipped maps}
+  \item{regionout}{name of the region of the clipped area}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
+This function takes, as input, maps from FreeVGT (type=VITO_VGT) and save maps with "our" nomenclature (type=VITO_CLIP).\cr
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+FreeVGT VITO's nomenclature : (type=VITO_VGT)\cr
+\verb{NDV_[YYYYMMDD]_[REGION]_Extract.tif}
+\itemize{
+\item{YYYY}{corresponging to the year (four digits)}
+\item{MM}{corresponging to the months (two digits)}
+\item{DD}{corresponging to the date of the period : "01", "11" or "21" (10-day mesures).}
+\item{REGION}{the region selected while extracting maps}
 }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (ndvidirectory, region, xlim, ylim, Ystart, Yend, outdirectory, 
-    regionout) 
-{
-    dicperiod = c("01", "11", "21")
-    dicmonths = c("01", "02", "03", "04", "05", "06", "07", "08", 
-        "09", "10", "11", "12")
-    if (!file.exists(substr(outdirectory, start = 1, stop = nchar(outdirectory) - 
-        1))) {
-        dir.create(outdirectory)
-    }
-    for (year in seq(Ystart, Yend, 1)) {
-        print(paste("Clipping year", as.character(year)))
-        for (month in seq(1, 12, 1)) {
-            for (period in seq(1, 3, 1)) {
-                filein = paste(ndvidirectory, "NDV_", as.character(year), 
-                  dicmonths[month], dicperiod[period], "_", region, 
-                  "_Extract.tif", sep = "")
-                inGrid = readpartGDAL(filein, xlim, ylim)
-                fileout = paste(outdirectory, regionout, as.character(year), 
-                  "M", dicmonths[month], "P", as.character(period - 
-                    1), ".tif", sep = "")
-                writeGDAL(inGrid, fileout, drivername = "GTiff", 
-                  type = "Byte", mvFlag = 255)
-            }
-        }
-    }
-  }
+Our nomenclature : : (type=VITO_CLIP)\cr
+After a process of clipping the images in a particular region, we rename the files as following :\cr
+\verb{[REGION][YYYY]M[MM]P[D].tif}
+\itemize{
+\item{REGION}{the region as entered while clipping data.}
+\item{YYYY}{corresponging to the year (four digits)}
+\item{MM}{corresponging to the months (two digits)}
+\item{D}{corresponding to the period (0, 1 or 2).}
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+}
+\value{Nothing is return, clipped map are saved in the \var{outdirectory}.}
+\author{Romain Frelat and Bruno Gerard}
