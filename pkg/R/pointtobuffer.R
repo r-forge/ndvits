@@ -1,11 +1,16 @@
 "pointtobuffer" <-
 function (shapefile, shapedir, ndvidirectory, region, Ystart, ext ="shp",
-    nameshape = "buffer", dirshape = ".", rad = 1) 
+    nameshape = "buffer", dirshape = ".", rad = 1, type = "VITO_CLIP") 
 {
     while (!tolower(ext) %in% c("shp", "kml")) {
         ext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
         if (ext == "") 
-            return()
+            stop("Error : extension of the shape/kml file is not correct.")
+    }
+    while (!toupper(type) %in% c("GIMMS", "VITO_CLIP", "VITO_VGT")) {
+        type = readline(cat("Type is not correct. Please choose between GIMMS, VITO_CLIP and VITO_VGT. \n"))
+        if (type == "") 
+            stop("Error : type of data is not correct.")
     }
     if (ext == "shp") {
         inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
@@ -17,9 +22,20 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart, ext ="shp",
         inPoints = SpatialPointsDataFrame(coords = coordinates(inPoints)[, 
             1:2], proj4string = CRS(proj4string(inPoints)), data = as.data.frame(inPoints[names(inPoints)]))
     }
-    filein = timetoMap(ndvidirectory, region, Ystart, 8, 2, type = "VITO_VGT")
-    inGrid = readpartGDAL(filein, bbox(inPoints)[1, ] + c(-0.05, 
-        0.05), bbox(inPoints)[2, ] + c(-0.05, 0.05))
+    pro = strsplit(proj4string(inPoints), "[[:punct:]]")[[1]]
+    if (!(pro[grep("proj", pro) + 1] == "aea " & pro[grep("ellps", 
+        pro) + 1] == "WGS84 ") & type=="GIMMS") {
+        inPoints = spTransform(inPoints, CRS("+proj=aea +ellps=WGS84 +lat_1=-19 +lat_2=21 +lat_0=1 +lon_0=20 +x_0=0 +y_0=0"))
+    }
+    if (!(pro[grep("proj", pro) + 1] == "longlat " & pro[grep("ellps", 
+        pro) + 1] == "WGS84 " & pro[grep("datum", pro) + 1] == 
+        "WGS84 ") & type!="GIMMS") {
+        inPoints = spTransform(inPoints, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84"))
+    }
+    around=ifelse(type=="GIMMS",16000,0.05)
+    filein = timetoMap(ndvidirectory, region, Ystart, 1, 1, type)
+    inGrid = readpartGDAL(filein, bbox(inPoints)[1, ] + c(-around, 
+        around), bbox(inPoints)[2, ] + c(-around, around))
     coord = c()
     data = c()
     for (i in 1:length(coordinates(inPoints)[, 1])) {

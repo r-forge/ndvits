@@ -32,7 +32,9 @@ res$seas
 res$trend
 }
 \references{
-Verbesselt 2 articles
+Verbesselt, J., Hyndman, R., Newnham, G. and Culvenor, D. 2010 \emph{Remote Sensing of Environment}, Detecting trend and seasonal changes in satellite image time series, \bold{114}, 106--115
+
+Verbesselt, J., Hyndman, R., Zeileis, A. and Culvenor, D. 2010 \emph{Remote Sensing of Environment}, Phenological change detection while accounting for abrupt and gradual trends in satellite image time series, \bold{114}, 2970--2980
 }
 \author{
 Romain Frelat and Bruno Gerard

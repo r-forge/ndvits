@@ -23,22 +23,18 @@ AnPhenoMetrics(TS, outfile, outgraph, Ystart, period, SOSth = 0.5, EOSth = 0.5)
 \details{
 How it works
 the calcul in itself
+how to detect double cropping season
+the max min
+and stuff
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A text file is saved with phenological metrics but nothing is returned.
 }
 \references{
-mainly Vrieling 2011.
+Brown, M. E. and de Beurs K. and Vrieling A. 2010 \emph{Remote Sensing of Environment}, The response of African land surface phenology to large scale climate oscillations, \bold{114}, 2286--2296
 }
 \author{
 Romain Frelat and Bruno Gerard
-}
-\note{
-%%  ~~further notes~~
 }
 
 \examples{

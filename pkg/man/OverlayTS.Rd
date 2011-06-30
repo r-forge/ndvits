@@ -1,8 +1,8 @@
 \name{OverlayTS}
 \alias{OverlayTS}
-\title{ Overlay Time series }
+\title{Overlay time series}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Make one graph with all time series overlayed.
 }
 \usage{
 OverlayTS(TS, Ystart, period = 36, title = "NDVI Time Series", outfile = FALSE)

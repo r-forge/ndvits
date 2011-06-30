@@ -25,7 +25,7 @@ function (TS, Ystart, period = 36, title = "NDVI Time Series",
 "PlotTS" <-
 function (TS, fileout = FALSE, Ystart, period, title = "NDVI time series") 
 {
-    liM = max(TS)
+    liM = max(TS)+0.05
     lim = min(TS)
     if (fileout != FALSE) {
         pdf(fileout)
