@@ -1,7 +1,7 @@
 "ExtractFile" <-
 function (shapefile, shapedir, listfile,outfile, ext = "shp") 
 {
-    list=read.table("listA.txt", header = TRUE,sep="\t")
+    list=read.table("listA.txt", header = TRUE, sep="\t")
     if (ext == "shp") {
         inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
     }
@@ -9,8 +9,7 @@ function (shapefile, shapedir, listfile,outfile, ext = "shp")
         inPoints = readOGR(shapedir, shapefile)
     }
     if (dim(coordinates(inPoints))[2] > 2) {
-        inPoints = SpatialPointsDataFrame(coords = coordinates(inPoints)[, 
-            1:2], proj4string = CRS(proj4string(inPoints)), data = as.data.frame(inPoints[names(inPoints)]))
+        inPoints = SpatialPointsDataFrame(coords = coordinates(inPoints) [, 1:2], proj4string = CRS(proj4string(inPoints)), data = as.data.frame(inPoints[names(inPoints)]))
     }
     pro = strsplit(proj4string(inPoints), "[[:punct:]]")[[1]]
     inGrid=readGDAL(list[1,1])
@@ -18,6 +17,7 @@ function (shapefile, shapedir, listfile,outfile, ext = "shp")
     if (!(pro[grep("proj", pro) + 1] == proI[grep("proj", proI) + 1] & pro[grep("ellps", pro) + 1] == proI[grep("ellps", proI) + 1])) {
         inPoints = spTransform(inPoints, CRS(proj4string(inGrid)))
     }
+    ndvits=c()
     for (filein in list[,1]) {
         inGrid = readpartGDAL(filein, bbox(inPoints)[1,] + c(-gridparameters(inGrid)[1, 2], gridparameters(inGrid)[1, 2]), bbox(inPoints)[2, ] + c(-gridparameters(inGrid)[2, 2], gridparameters(inGrid)[2, 2]))
         if (length(grep("oint", class(inPoints))) > 0) {
@@ -59,7 +59,7 @@ function (shapefile, shapedir, listfile,outfile, ext = "shp")
             all = data.frame(cbind(name, ndvits))
         }
     }
-    write.table(all, outfile, quote = F, row.names = T, sep = "\t")
+    write.table(all, outfile, quote = FALSE, row.names = TRUE, sep = "\t")
     return(all)
 }
 
@@ -173,7 +173,7 @@ function (shapefile, shapedir, ndvidirectory, region, outfile,
             all = data.frame(cbind(name, ndvits))
         }
     }
-    write.table(all, outfile, quote = F, row.names = T, sep = "\t")
+    write.table(all, outfile, quote = FALSE, row.names = TRUE, sep = "\t")
     return(all)
 }
 "ExtractVGT" <-
@@ -266,7 +266,7 @@ function (shapefile, shapedir, ndvidirectory, region, outfile = "TS.txt",
             all = data.frame(cbind(name, ndvits))
         }
     }
-    write.table(all, outfile, quote = F, row.names = T, sep = "\t")
+    write.table(all, outfile, quote = FALSE, row.names = TRUE, sep = "\t")
     return(all)
 }
 "ExtractVito" <-
@@ -364,7 +364,7 @@ function (shapefile, shapedir, ndvidirectory, region, outfile = "TS.txt",
             all = data.frame(cbind(name, ndvits))
         }
     }
-    write.table(all, outfile, quote = F, row.names = T, sep = "\t")
+    write.table(all, outfile, quote = FALSE, row.names = TRUE, sep = "\t")
     return(all)
 }
 "normNDVI" <-
@@ -437,6 +437,7 @@ function (TS, area, fileout = FALSE, Ystart, period = 36, fct = "mean",
     colnames(finalndvi) = as.character(round(time(ndviMSG), 2))
     return(finalndvi)
 }
+
 "TimeSeriesAnalysis" <-
 function (shapefile, shapedir, ndvidirectory, region, Ystart, 
     Yend, outfile = "TS.txt", outfile2 = "TS.pdf", outfile3 = FALSE, 
@@ -498,7 +499,8 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart,
             row.names = 1)
     }
     if (toupper(type) == "FILES") {
-        period = readline(cat("how many observation per year ?\n"))
+        period = as.numeric(readline(cat("how many observation per year ?\n")))
+        max = as.numeric(readline(cat("value maximum ?\n")))
         TS = ExtractFile(shapefile, shapedir, ndvidirectory, outfile, ext)
     }
     ndvi = normNDVI(TS, max)

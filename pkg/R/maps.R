@@ -10,7 +10,7 @@ function (mapin, mapref, mapsd = FALSE, fileout = "diff.tif")
     return(res)
 }
 "maplocalstat" <-
-function (ndvidirectory, region, Ystart, Yend, xlim = NULL, ylim = NULL,type="VITO_CLIP") 
+function (ndvidirectory, region, Ystart, Yend, xlim = NULL, ylim = NULL,type="VITO_CLIP",outname="stat",org=c(2,2), obj=NULL, objdir=NULL, objext="shp", ext="show", pal = "Spectral") 
 {
     while (!toupper(type) %in% c("GIMMS", "VITO_CLIP", "VITO_VGT")) {
         type = readline(cat("Type is not correct. Please choose between GIMMS, VITO_CLIP and VITO_VGT. \n"))
@@ -40,16 +40,16 @@ function (ndvidirectory, region, Ystart, Yend, xlim = NULL, ylim = NULL,type="VI
     tp2$band1 = apply(mat, 1, maxNA)*10000
     tp3$band1 = apply(mat, 1, minNA)*10000
     tp4$band1 = apply(mat, 1, sdNA)*10000
-    writeGDAL(tp, paste(region, "mean", substr(as.character(Ystart), 
+    writeGDAL(tp, paste(outname, "mean", substr(as.character(Ystart), 
         3, 4), substr(as.character(Yend), 3, 4), ".tif", sep = ""), 
         drivername = "GTiff", type = "Int16", mvFlag = -32768)
-    writeGDAL(tp2, paste(region, "max", substr(as.character(Ystart), 
+    writeGDAL(tp2, paste(outname, "max", substr(as.character(Ystart), 
         3, 4), substr(as.character(Yend), 3, 4), ".tif", sep = ""), 
         drivername = "GTiff", type = "Int16", mvFlag = -32768)
-    writeGDAL(tp3, paste(region, "min", substr(as.character(Ystart), 
+    writeGDAL(tp3, paste(outname, "min", substr(as.character(Ystart), 
         3, 4), substr(as.character(Yend), 3, 4), ".tif", sep = ""), 
         drivername = "GTiff", type = "Int16", mvFlag = -32768)
-    writeGDAL(tp4, paste(region, "sd", substr(as.character(Ystart), 
+    writeGDAL(tp4, paste(outname, "sd", substr(as.character(Ystart), 
         3, 4), substr(as.character(Yend), 3, 4), ".tif", sep = ""), 
         drivername = "GTiff", type = "Int16", mvFlag = -32768)
     res = c()
@@ -57,6 +57,8 @@ function (ndvidirectory, region, Ystart, Yend, xlim = NULL, ylim = NULL,type="VI
     res$max = tp2
     res$min = tp3
     res$sd = tp4
+    listfile=paste(outname, c("max","min","mean","sd"), substr(as.character(Ystart), 3, 4), substr(as.character(Yend), 3, 4), ".tif", sep = "")
+    multimap(listfile, c("max","min","mean","sd"), namefile=paste(outname, "Stat", substr(as.character(Ystart), 3, 4), substr(as.character(Yend), 3, 4), sep = ""), org=org, main=paste(outname, " NDVI local statistics ",as.character(Ystart), " - ", as.character(Yend), sep=""), obj=obj, objdir=objdir, objext=objext, ext=ext, pal=pal)
     return(res)
 }
 "mapmaxyear" <-

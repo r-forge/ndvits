@@ -5,7 +5,7 @@
 Compute statistics of NDVI maps of a certain time.
 }
 \usage{
-maplocalstat(ndvidirectory, region, Ystart, Yend, xlim = NULL, ylim = NULL, type="VITO_CLIP")
+maplocalstat(ndvidirectory, region, Ystart, Yend, xlim = NULL, ylim = NULL, type="VITO_CLIP", outname = "stat", org=c(2,2), obj=NULL, objdir=NULL, objext="shp", ext="show", pal = "Spectral")
 }
 \arguments{
   \item{ndvidirectory}{directory of the ndvi images (geotiff)}
@@ -15,6 +15,13 @@ maplocalstat(ndvidirectory, region, Ystart, Yend, xlim = NULL, ylim = NULL, type
   \item{xlim}{longitude of the desired area}
   \item{ylim}{latitude of the desired area}
   \item{type}{type of data : GIMMS, VITO_VGT or VITO_CLIP}
+  \item{outname}{prefixe of the saved name}
+  \item{org}{organisation of the maps. To change only if maps are not cube then can be c(1,3) or c(3,1).}
+  \item{obj}{object to show on the maps}
+  \item{objdir}{direction of the object to show on the maps}
+  \item{objext}{extension of the object file : "kml" or "shp"}
+  \item{ext}{how is saved the map}
+  \item{pal}{palette}
 }
 \details{
 \verb{maplocalstat} load the maps between \verb{Ystart} and \verb{Yend}. Then it computes basics statistics (max, min, mean, sd) discarding NA values.

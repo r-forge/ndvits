@@ -10,7 +10,7 @@ function (ndvidirectory, region, Ystart, Yend, period, namefile = "anomaly", ext
     if (length(period)>1) {
         period = period[1]:period[2]
     }
-    cat("Colecting data from the given period ... \n")
+    cat("Collecting data from the given period ... \n")
     dat=c()
     for (year in seq(Ystart, Yend, 1)) {
         tmp=0

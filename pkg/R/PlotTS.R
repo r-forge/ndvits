@@ -47,7 +47,7 @@ function (TS, fileout = FALSE, Ystart, period, title = "NDVI time series")
         }
         axis(side = 1, at = seq(Ystart, 2009, 1), labels = seq(Ystart, 
             2009, 1))
-        mtext(title, side = 3, line = 3, outer = T)
+        mtext(title, side = 3, line = 3, outer = TRUE)
     }
     else {
         par(mfrow = c(5, 1), mar = c(0, 4.1, 0, 2.1), oma = c(8, 
@@ -69,7 +69,7 @@ function (TS, fileout = FALSE, Ystart, period, title = "NDVI time series")
             if (i%%5 == 0 || i == length(TS[, 1])) {
                 axis(side = 1, at = seq(Ystart, 2009, 1), labels = seq(Ystart, 
                   2009, 1))
-                mtext(title, side = 3, line = 3, outer = T)
+                mtext(title, side = 3, line = 3, outer = TRUE)
             }
         }
     }

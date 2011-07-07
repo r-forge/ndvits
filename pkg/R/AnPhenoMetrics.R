@@ -1,5 +1,5 @@
 "AnPhenoMetrics" <-
-function (TS, outfile, outgraph=FALSE, Ystart, period, SOSth = 0.5, 
+function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5, 
     EOSth = 0.5) 
 {
     if (outgraph != FALSE) {
@@ -130,7 +130,7 @@ function (TS, outfile, outgraph=FALSE, Ystart, period, SOSth = 0.5,
             rownames(res) = Ystart:(Ystart + length(year[, 1]) - 
                 2)
             file = paste(rownames(TS)[j], outfile, sep = "")
-            write.table(res, file, quote = F, row.names = F, 
+            write.table(res, file, quote = FALSE, row.names = FALSE, 
                 sep = "\t")
         }
         if (length(meanM) == 2 & length(meanm) == 2 & mean(meanC) > 0.2 & mean(meanC) < 
@@ -246,7 +246,7 @@ function (TS, outfile, outgraph=FALSE, Ystart, period, SOSth = 0.5,
             #rownames(res) = Ystart:(Ystart + length(year[, 1]) - 
             #    2)
             #file = paste(rownames(TS)[j], outfile, sep = "")
-            #write.table(res, file, quote = F, row.names = F, 
+            #write.table(res, file, quote = FALSE, row.names = FALSE, 
             #    sep = "\t")
         }
     }

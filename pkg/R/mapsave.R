@@ -120,34 +120,29 @@ function (map, obj = NULL, shapedir = NULL, ext = "show", namefile = "map",
     if (ext == "jpg" || ext == "jpeg") {
         jpeg(paste(namefile, ".jpg", sep = ""), quality = 90)
         print(spplot(map, sp.layout = lay, col.regions = colorRampPalette(brewer.pal(brewer.pal.info[pal, 
-            "maxcolors"], pal)), xlab = "Longitude()", ylab = "Latitude()", 
-            add = T, scales = list(draw = T), main = namefile, 
+            "maxcolors"], pal)), xlab = "Longitude", ylab = "Latitude", 
+            add = TRUE, scales = list(draw = TRUE), main = namefile, 
             font.main = 4))
         dev.off()
     }
     else {
         if (ext == "png") {
             png(paste(namefile, ".png", sep = ""))
-            print(spplot(map, sp.layout = lay, col.regions = colorRampPalette(brewer.pal(brewer.pal.info[pal, 
-                "maxcolors"], pal)), xlab = "Longitude()", ylab = "Latitude()", 
-                add = T, scales = list(draw = T), main = namefile, 
-                font.main = 4))
+            print(spplot(map, sp.layout = lay, col.regions = colorRampPalette(brewer.pal(brewer.pal.info[pal, "maxcolors"], pal)), xlab = "Longitude", ylab = "Latitude", add = TRUE, scales = list(draw = TRUE), main = namefile, font.main = 4))
             dev.off()
         }
         else {
             if (ext == "pdf") {
                 pdf(paste(namefile, ".pdf", sep = ""))
                 print(spplot(map, sp.layout = lay, col.regions = colorRampPalette(brewer.pal(brewer.pal.info[pal, 
-                  "maxcolors"], pal)), xlab = "Longitude()", 
-                  ylab = "Latitude()", add = T, scales = list(draw = T), 
-                  main = namefile, font.main = 4))
+                  "maxcolors"], pal)), xlab = "Longitude", 
+                  ylab = "Latitude", add = TRUE, scales = list(draw = TRUE), main = namefile, font.main = 4))
                 dev.off()
             }
             else {
                 print(spplot(map, sp.layout = lay, col.regions = colorRampPalette(brewer.pal(brewer.pal.info[pal, 
-                  "maxcolors"], pal)), xlab = "Longitude()", 
-                  ylab = "Latitude()", add = T, scales = list(draw = T), 
-                  main = namefile, font.main = 4))
+                  "maxcolors"], pal)), xlab = "Longitude", 
+                  ylab = "Latitude", add = TRUE, scales = list(draw = TRUE), main = namefile, font.main = 4))
             }
         }
     }
