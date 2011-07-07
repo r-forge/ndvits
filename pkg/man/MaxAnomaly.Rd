@@ -1,19 +1,19 @@
-\name{AnnualAnomaly}
-\alias{AnnualAnomaly}
-\title{Annual Maximum Anomaly}
+\name{MaxAnomaly}
+\alias{MaxAnomaly}
+\title{Maximum Anomaly}
 \description{
-The function AnnualAnomaly compute the anomaly map of the difference between the maximum of each year and their mean.
+The function MaxAnomaly compute the anomaly map of the difference between the maximum of each year and their mean.
 }
 \usage{
-AnnualAnomaly(ndvidirectory, region, Ystart, Yend, ext = "show", namefile = "anomaly", xlim = NULL, ylim = NULL, type="VITO_CLIP", obj = NULL, objdir = NULL, objext = "shp", label = FALSE, pal = "Spectral")
+MaxAnomaly(ndvidirectory, region, Ystart, Yend, namefile = "anomaly", ext = "show", xlim = NULL, ylim = NULL, type="VITO_CLIP", obj = NULL, objdir = NULL, objext = "shp", label = FALSE, pal = "Spectral")
 }
 \arguments{
   \item{ndvidirectory}{directory of the ndvi files}
   \item{region}{name of the region}
   \item{Ystart}{year of start of the analysis}
   \item{Yend}{year of end}
-  \item{ext}{extension of the map}
   \item{namefile}{prefixe of the name of the file. By default namefile="anomaly"}
+  \item{ext}{extension of the map}
   \item{xlim}{longitude of the desired area}
   \item{ylim}{latitude of the desired area}
   \item{type}{type of data : GIMMS, VITO_VGT or VITO_CLIP}

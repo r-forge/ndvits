@@ -4,10 +4,10 @@
 Period Anomaly map
 }
 \description{
-The function PeriodAnomaly compute the anomaly map of the difference between  the mean of a special period and others ... has to be done ...
+The function PeriodAnomaly compute the anomaly map on a given period of time.
 }
 \usage{
-PeriodAnomaly(ndvidirectory, region, Ystart, Yend, period = 36, namefile = "anomaly", ext = "show", xlim = NULL, ylim = NULL, obj = NULL, objdir = NULL, objext = "shp", label = FALSE, pal = "Spectral")
+PeriodAnomaly(ndvidirectory, region, Ystart, Yend, period, namefile = "anomaly", ext = "show", xlim = NULL, ylim = NULL, type="VITO_CLIP", obj = NULL, objdir = NULL, objext = "shp", label = FALSE, pal = "Spectral")
 }
 \arguments{
   \item{ndvidirectory}{directory of the ndvi files}
@@ -19,6 +19,7 @@ PeriodAnomaly(ndvidirectory, region, Ystart, Yend, period = 36, namefile = "anom
   \item{ext}{extension of the map}
   \item{xlim}{longitude of the desired area}
   \item{ylim}{latitude of the desired area}
+  \item{type}{type of data : GIMMS, VITO_VGT or VITO_CLIP}
   \item{obj}{shapefile to draw on the map}
   \item{objdir}{direction of the shapefile to draw on the map}
   \item{objext}{extension of the shapefile ("shp" or "kml"}

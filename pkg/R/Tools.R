@@ -101,7 +101,7 @@ function (shape, shapedir, ext = "shp", around = 0.05)
     return(res)
 }
 "timetoMap" <-
-function (ndvidirectory, region, year, month, period, type) 
+function (ndvidirectory, region, year, month, period, type="VITO_CLIP") 
 {
     while (!toupper(type) %in% c("GIMMS", "VITO_CLIP", "VITO_VGT")) {
         type = readline(cat("Type is not correct. Please choose between GIMMS, VITO_CLIP and VITO_VGT. \n"))
@@ -159,3 +159,26 @@ function (ndvidirectory, region, year, month, period, type)
         return(filein)
     }
 }
+
+periodtoMap <- function (ndvidirectory, region, year, period, type="VITO_CLIP") 
+{
+    while (!toupper(type) %in% c("GIMMS", "VITO_CLIP", "VITO_VGT")) {
+        type = readline(cat("Type is not correct. Please choose between GIMMS, VITO_CLIP and VITO_VGT. \n"))
+        if (type == "") 
+            stop("Error, type of data NULL.")
+    }
+    if (toupper(type) == "GIMMS") {
+        if (period > 24) {
+            stop("Error gimms has only 24 images per year.")
+        } else {
+        return(timetoMap(ndvidirectory, region, year, ((period-1)%/%2)+1, ((period-1)%%2)+1, type))
+        }
+    } else {
+       if (period > 36) {
+            stop("Error vito has only 36 images per year.")
+        } else {
+        return(timetoMap(ndvidirectory, region, year, ((period-1)%/%3)+1, ((period-1)%%3)+1, type))
+        }
+    }
+}
+        

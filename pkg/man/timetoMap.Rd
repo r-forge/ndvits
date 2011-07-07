@@ -7,7 +7,7 @@ Time to name of the NDVI map.
 Return the complete directory of the map of a desired time.
 }
 \usage{
-timetoMap(ndvidirectory, region, year, month, period, type)
+timetoMap(ndvidirectory, region, year, month, period, type="VITO_CLIP")
 }
 \arguments{
   \item{ndvidirectory}{directory of the ndvi files}
@@ -19,7 +19,7 @@ timetoMap(ndvidirectory, region, year, month, period, type)
 }
 \value{
 Return the complete directory of the map.
-If the map doesn't exist, a error message is printed.
+If the map doesn't exist, an error message is printed.
 }
 \author{
 Romain Frelat and Bruno Gerard

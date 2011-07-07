@@ -1,3 +1,68 @@
+"ExtractFile" <-
+function (shapefile, shapedir, listfile,outfile, ext = "shp") 
+{
+    list=read.table("listA.txt", header = TRUE,sep="\t")
+    if (ext == "shp") {
+        inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
+    }
+    else {
+        inPoints = readOGR(shapedir, shapefile)
+    }
+    if (dim(coordinates(inPoints))[2] > 2) {
+        inPoints = SpatialPointsDataFrame(coords = coordinates(inPoints)[, 
+            1:2], proj4string = CRS(proj4string(inPoints)), data = as.data.frame(inPoints[names(inPoints)]))
+    }
+    pro = strsplit(proj4string(inPoints), "[[:punct:]]")[[1]]
+    inGrid=readGDAL(list[1,1])
+    proI = strsplit(proj4string(inGrid), "[[:punct:]]")[[1]]
+    if (!(pro[grep("proj", pro) + 1] == proI[grep("proj", proI) + 1] & pro[grep("ellps", pro) + 1] == proI[grep("ellps", proI) + 1])) {
+        inPoints = spTransform(inPoints, CRS(proj4string(inGrid)))
+    }
+    for (filein in list[,1]) {
+        inGrid = readpartGDAL(filein, bbox(inPoints)[1,] + c(-gridparameters(inGrid)[1, 2], gridparameters(inGrid)[1, 2]), bbox(inPoints)[2, ] + c(-gridparameters(inGrid)[2, 2], gridparameters(inGrid)[2, 2]))
+        if (length(grep("oint", class(inPoints))) > 0) {
+            ndvits = cbind(ndvits, overlay(inGrid, inPoints)$band1)
+        } else {
+            if (length(grep("olygon", class(inPoints))) > 0) {
+                ndvits = cbind(ndvits, inGrid@data[!is.na(overlay(inGrid, inPoints)), ])
+            } else {
+                print("The type of ths shp/kml file is unknown.")
+            }   
+        }
+    }
+    if (ext == "shp") {
+        if (length(grep("oint", class(inPoints))) > 0) {
+            all = data.frame(inPoints[names(inPoints)], ndvits)
+        }
+        if (length(grep("olygon", class(inPoints))) > 0) {
+            a = overlay(inGrid, inPoints)
+            xa = coordinates(inGrid)[!is.na(a), 1]
+            ya = coordinates(inGrid)[!is.na(a), 2]
+            na = c()
+            for (i in names(inPoints)) {
+                na = cbind(na, as.character(inPoints[[i]][a[!is.na(a)]]))
+            }
+            colnames(na) = names(inPoints)
+            all = data.frame(cbind(xa, ya, na, ndvits))
+        }
+    }
+    else {
+        if (length(grep("oint", class(inPoints))) > 0) {
+            all = data.frame(cbind(as.character(inPoints$Name), 
+                ndvits))
+        }
+        if (length(grep("olygon", class(inPoints))) > 0) {
+            a = overlay(inGrid, inPoints)
+            xa = coordinates(inGrid)[!is.na(a), 1]
+            ya = coordinates(inGrid)[!is.na(a), 2]
+            name = as.character(inPoints$Name[a[!is.na(a)]])
+            all = data.frame(cbind(name, ndvits))
+        }
+    }
+    write.table(all, outfile, quote = F, row.names = T, sep = "\t")
+    return(all)
+}
+
 "ExtractGIMMS" <-
 function (shapefile, shapedir, ndvidirectory, region, outfile, 
     Ystart, Yend, ext = "shp") 
@@ -434,8 +499,7 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart,
     }
     if (toupper(type) == "FILES") {
         period = readline(cat("how many observation per year ?\n"))
-        #TS = ExtractFiles(shapefile, shapedir, ndvidirectory, 
-        #    files, outfile, Ystart, Yend, ext)
+        TS = ExtractFile(shapefile, shapedir, ndvidirectory, outfile, ext)
     }
     ndvi = normNDVI(TS, max)
     TS2 = STLperArea(ndvi, fac, outfile2, Ystart, 
