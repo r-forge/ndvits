@@ -8,8 +8,10 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
     else {
         par(ask = TRUE)
     }
+    write(paste("Phenological metrics : \n threshold SOS : ",SOSth, ", EOS : ", EOSth, ", nobsperyear : ", period, sep = ""), outfile, sep = "\t")
     liM = max(TS)
     lim = min(TS)
+    final = c()
     for (j in 1:length(TS[, 1])) {
         res = c()
         plot(ts(TS[j, ], start = Ystart, freq = period), ylim = c(lim, 
@@ -57,7 +59,12 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                   meanC[tmp[k + 1]])))]
         }
         if (length(meanM) != length(meanm)) {
-            print("Not same number of minimums and maximums, results may be wrong!")
+            #cat("Not same number of minimums and maximums, results may be wrong!\n")
+            if (length(meanM) > length(meanm)) {
+                meanM = meanM[-which.min(meanC[meanM])]
+            } else {
+                meanm = meanm[-which.max(meanC[meanm])]
+            }
         }
         abline(v = c(meanM, meanm), lty = 2)
         text(meanm, -0.1, "min", xpd = "NA", cex = 1.2)
@@ -66,46 +73,50 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
             Mdm = meanM
             mdm = meanm
             Mm = max(meanC)
-            SOStm = min(meanC) + SOSth * (Mm - min(meanC))
-            SOSm = mdm + which(meanC[mdm:Mdm] > SOStm)[1] - 1
-            #abline(v = c(Mdm, mdm), lty = 2)
-            #text(mdm, -0.1, "min", xpd = "NA", cex = 1.2)
-            #text(Mdm, -0.1, "max", xpd = "NA", cex = 1.2)
+            if (mdm - 2 * (period/12) < 0) {
+                st = mdm - 2 * (period/12) + period
+                yst = -1
+            } else {
+                st = mdm - 2 * (period/12)
+                yst = 0
+            }
+            if (mdm + 14 * (period/12) > (2 * period)) {
+                ed = mdm + 14 * (period/12) - 2 * period
+                yed = 2
+            } else {
+                ed = mdm + 14 * (period/12) - period
+                yed = 1
+            }
             for (i in 1:(length(year[, 1]) - 1)) {
-                t = c(year[i, ], year[i + 1, 1:16])
-                M = max(t)
-                Md = which.max(t)
-                if (Md > Mdm + 5 | Md < Mdm - 5) {
-                  print(paste("max not in the seasonal windows year", 
-                    rownames(year)[i]))
-                  M = max(t[(Mdm - 5):(Mdm + 5)])
-                  Md = which.max(t[(Mdm - 5):(Mdm + 5)]) + (Mdm - 
-                    5) - 1
+                if (yed - yst == 1) {
+                  t = c(year[i + yst, st:period], year[i + yed, 
+                    1:ed])
+                } else {
+                  t = c(year[i + yst, st:period], year[i + ((yed + 
+                    yst)/2),], year[i + yed, 1:ed])
                 }
-                ml = min(t[1:Md])
-                mld = which.min(t[1:Md])
-                if (mld > mdm + 5 | mld < mdm - 5) {
-                  print(paste("min not in the seasonal windows year", 
-                    rownames(year)[i]))
-                  ml = min(t[(mdm - 5):(mdm + 5)])
-                  mld = which.min(t[(mdm - 5):(mdm + 5)]) + (mdm - 
-                    5) - 1
-                }
-                mr = min(t[Md:(period + 16)])
-                mrd = Md + which.min(t[Md:(period + 16)]) - 1
+                #finding key date in the season
+                M = max(t[(Mdm + st - 2 * (period/12)):(Mdm + 
+                  st + 2 * (period/12))])
+                Md = which.max(t[(Mdm + st - 2 * (period/12)):(Mdm + 
+                  st + 2 * (period/12))]) + Mdm + st - 2 * (period/12) - 1
+                ml = min(t[1:(4 * period/12)])
+                mld = which.min(t[1:(4 * period/12)])
+                mr = min(t[(12 * period/12):(16 * period/12)]) 
+                mrd = which.min(t[(12 * period/12):(16 * period/12)])+ 12 * period/12 -1
                 SOSt = ml + SOSth * (M - ml)
                 SOS = mld + which(t[mld:Md] > SOSt)[1] - 1
                 EOSt = mr + EOSth * (M - mr)
-                EOS = Md + which(t[Md:mrd] < EOSt)[1] - 1
+                EOS = Md + which(t[Md:mrd] < EOSt)[1] - 2
                 LOS = EOS - SOS
                 cumNDVI = sum(t[EOS:SOS])
-                plot(seq(1, (period + 16), 1), t, type = "l", 
+                cumNDVI2 = sum(t[EOS:SOS]) - (mean(c(t[EOS], t[SOS])) * LOS)
+                plot(1:length(t), t, type = "l", 
                   xaxt = "n", ylim = c(0, liM), xlab = "time", 
                   ylab = "SG filtered NDVI", main = paste(rownames(TS)[j], 
                     "NDVI Series", rownames(year)[i], "-", rownames(year)[i + 
                       1]))
-                axis(side = 1, at = seq(1, (period + 15), period/12), 
-                  labels = rep(month.abb, 2)[1:((period + 16)/(period/12))])
+                axis(side = 1, at = seq(((st*12)%%period)/12+1, 16*period/12,period/12), labels = rep(month.abb, 2)[((st*12)%/%period+1):((ed*12)%/%period+12)])
                 points(x = Md, y = M, col = "green", pch = 3)
                 points(x = mld, y = ml, col = "red", pch = 3)
                 points(x = mrd, y = mr, col = "red", pch = 3)
@@ -119,19 +130,20 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                 text(mean(c(EOS, SOS)), 0.03, paste("cumNDVI =", 
                   as.character(format(cumNDVI, digits = 5)), 
                   sep = ""))
-                res = rbind(res, c(ml, mld, M, Md, SOSt, SOS, 
-                  EOSt, EOS, LOS, cumNDVI, M - Mm, SOS - SOSm, 
-                  mld - mdm))
+                mld2=(st+mld)%%period
+                Md2=(st+Md)%%period
+                SOS2=(st+SOS)%%period
+                EOS2=(st+EOS)%%period
+                res = rbind(res, c(round(ml,3), mld2, round(M,3), Md2, round(SOSt,3), SOS2, 
+                  round(EOSt,3), EOS2, LOS, round(cumNDVI, 3), round(cumNDVI2, 3), round(M - Mm, 3)))
             }
             res = as.data.frame(res)
-            names(res) = c("ml", "mld", "M", "Md", "SOSt", "SOS", 
-                "EOSt", "EOS", "LOS", "cumNDVI", "diffMax", "diffSOS", 
-                "diffmd")
+            names(res) = c("\tml", "mld", "M", "Md", "SOSt", "SOS", 
+                "EOSt", "EOS", "LOS", "cumNDVI", "cumNDVI-mean", "diffMax")
             rownames(res) = Ystart:(Ystart + length(year[, 1]) - 
                 2)
-            file = paste(rownames(TS)[j], outfile, sep = "")
-            write.table(res, file, quote = FALSE, row.names = FALSE, 
-                sep = "\t")
+            write(rownames(TS)[j], outfile, append = TRUE, sep = "")
+            write.table(res, outfile, quote = FALSE, row.names = TRUE, append = TRUE, sep = "\t")
         }
         if (length(meanM) == 2 & length(meanm) == 2 & mean(meanC) > 0.2 & mean(meanC) < 
             0.7) {
@@ -188,10 +200,8 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                   st + 2 * (period/12))])
                 mld2 = which.min(t[(mdm2 + st - 2 * (period/12)):(mdm2 + 
                   st + 2 * (period/12))])+mdm2 + st - 2 * (period/12) - 1                
-		mr = min(t[(mdm + period + st - 2 * (period/12)):(mdm + period + 
-                  st + 2 * (period/12) - 1)])
-                mrd = which.min(t[(mdm + period + st - 2 * (period/12)):(mdm + period + 
-                  st + 2 * (period/12) - 1)])+mdm + period + st - 2 * (period/12) - 1 
+		mr = min(t[(mdm + period + st - 2 * (period/12)):(mdm + period + st + 2 * (period/12) - 1)])
+                mrd = which.min(t[(mdm + period + st - 2 * (period/12)):(mdm + period + st + 2 * (period/12) - 1)])+mdm + period + st - 2 * (period/12) - 1 
                 #calculate metrics season 1
                 SOS1t = ml1 + SOSth * (M1 - ml1)
                 SOS1 = mld1 + which(t[mld1:Md1] > SOS1t)[1] - 1
@@ -235,19 +245,13 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                 text(mean(c(EOS2, SOS2)), 0.03, paste("cumNDVI =", 
                   as.character(format(cumNDVI2, digits = 5)), 
                   sep = ""))
-                #res = rbind(res, c(ml, mld, M, Md, SOSt, SOS, 
-                #  EOSt, EOS, LOS, cumNDVI, M - Mm, SOS - SOSm, 
-                #  mld - mdm))
+                res = rbind(res, c(round(ml1,3), mld1, round(M1,3), Md1, round(ml2,3), mld2, round(M2,3), Md2, round(SOS1t,3), SOS1, round(EOS1t,3), EOS1, LOS1, round(cumNDVI1, 5), round(SOS2t,3), SOS2, round(EOS2t, 3), EOS2, LOS2, round(cumNDVI2, 5), round(cumNDVI1+cumNDVI2, 5)))
             }
-            #res = as.data.frame(res)
-            #names(res) = c("ml", "mld", "M", "Md", "SOSt", "SOS", 
-            #    "EOSt", "EOS", "LOS", "cumNDVI", "diffMax", "diffSOS", 
-            #    "diffmd")
-            #rownames(res) = Ystart:(Ystart + length(year[, 1]) - 
-            #    2)
-            #file = paste(rownames(TS)[j], outfile, sep = "")
-            #write.table(res, file, quote = FALSE, row.names = FALSE, 
-            #    sep = "\t")
+            res = as.data.frame(res)
+            names(res) = c("\tml1", "mld1", "M1", "Md1", "ml2", "mld2", "M2", "Md2", "SOS1t", "SOS1", "EOS1t", "EOS1", "LOS1", "cumNDVI1", "SOS2t", "SOS2", "EOS2t", "EOS2", "LOS2", "cumNDVI2", "cumNDVI-tot")
+            rownames(res) = Ystart:(Ystart + length(year[, 1]) - 2)
+            write(rownames(TS)[j], outfile, append = TRUE, sep = "")
+            write.table(res, outfile, quote = FALSE, row.names = TRUE, append = TRUE, sep = "\t")
         }
     }
     if (outgraph != FALSE) {

@@ -160,7 +160,8 @@ function (ndvidirectory, region, year, month, period, type="VITO_CLIP")
     }
 }
 
-periodtoMap <- function (ndvidirectory, region, year, period, type="VITO_CLIP") 
+periodtoMap <- 
+function (ndvidirectory, region, year, period, type="VITO_CLIP") 
 {
     while (!toupper(type) %in% c("GIMMS", "VITO_CLIP", "VITO_VGT")) {
         type = readline(cat("Type is not correct. Please choose between GIMMS, VITO_CLIP and VITO_VGT. \n"))
@@ -181,4 +182,18 @@ periodtoMap <- function (ndvidirectory, region, year, period, type="VITO_CLIP")
         }
     }
 }
-        
+    
+tolist <- 
+function(ndvidirectory, region, Ystart, Yend, outfile="list.txt", type = "VITO_VGT")
+{
+    period=ifelse(type=="GIMMS",24,36)
+    filein=c()
+    for (year in Ystart:Yend) {
+        for (p in 1:period) {
+            filein=c(filein,periodtoMap(ndvidirectory,region,year,p))
+        }
+    }
+    filein=as.data.frame(filein)
+    colnames(filein)=length(filein[,1])
+    write.table(filein, outfile, quote = FALSE, row.names=FALSE)
+}    

@@ -1,7 +1,11 @@
 "ExtractFile" <-
-function (shapefile, shapedir, listfile,outfile, ext = "shp") 
+function (shapefile, shapedir, listfile, outfile, period, ext = "shp") 
 {
-    list=read.table("listA.txt", header = TRUE, sep="\t")
+    list=read.table(listfile, header = FALSE, sep="\t")
+    nts=as.numeric(as.character(list[1,1]))
+    if (is.na(nts) | length(list[,1])<nts+1) {
+        stop("The file is not in the good format. The first line should contain the number of images to be processed.")
+    }
     if (ext == "shp") {
         inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
     }
@@ -12,13 +16,13 @@ function (shapefile, shapedir, listfile,outfile, ext = "shp")
         inPoints = SpatialPointsDataFrame(coords = coordinates(inPoints) [, 1:2], proj4string = CRS(proj4string(inPoints)), data = as.data.frame(inPoints[names(inPoints)]))
     }
     pro = strsplit(proj4string(inPoints), "[[:punct:]]")[[1]]
-    inGrid=readGDAL(list[1,1])
+    inGrid=readGDAL(list[2,1])
     proI = strsplit(proj4string(inGrid), "[[:punct:]]")[[1]]
     if (!(pro[grep("proj", pro) + 1] == proI[grep("proj", proI) + 1] & pro[grep("ellps", pro) + 1] == proI[grep("ellps", proI) + 1])) {
         inPoints = spTransform(inPoints, CRS(proj4string(inGrid)))
     }
     ndvits=c()
-    for (filein in list[,1]) {
+    for (filein in list[2:(nts+1),1]) {
         inGrid = readpartGDAL(filein, bbox(inPoints)[1,] + c(-gridparameters(inGrid)[1, 2], gridparameters(inGrid)[1, 2]), bbox(inPoints)[2, ] + c(-gridparameters(inGrid)[2, 2], gridparameters(inGrid)[2, 2]))
         if (length(grep("oint", class(inPoints))) > 0) {
             ndvits = cbind(ndvits, overlay(inGrid, inPoints)$band1)
@@ -59,7 +63,12 @@ function (shapefile, shapedir, listfile,outfile, ext = "shp")
             all = data.frame(cbind(name, ndvits))
         }
     }
-    write.table(all, outfile, quote = FALSE, row.names = TRUE, sep = "\t")
+    nyear=nts%/%period
+    if (nts%%period !=0) {
+        cat("Warning message: \nThe time series doesn't stop with at the end of a year, the last year is not complete.\n") 
+    }
+    write(paste(as.character(nyear), as.character(period), as.character(nts),sep=" "), outfile, sep = "\t")
+    write.table(all, outfile, append = TRUE, quote = FALSE, row.names = TRUE, sep = "\t")
     return(all)
 }
 
@@ -461,7 +470,6 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart,
                 f = readline(cat(paste("choose between one of the grouping factor available : \n", 
                   list(as.character(info)), "\n : ", sep = "")))
             }
-            fac = as.factor(inPoints[[f]])
         }
     }
     else {
@@ -501,8 +509,9 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart,
     if (toupper(type) == "FILES") {
         period = as.numeric(readline(cat("how many observation per year ?\n")))
         max = as.numeric(readline(cat("value maximum ?\n")))
-        TS = ExtractFile(shapefile, shapedir, ndvidirectory, outfile, ext)
+        TS = ExtractFile(shapefile, shapedir, ndvidirectory, outfile, period, ext)
     }
+    fac = as.factor(TS[,f])
     ndvi = normNDVI(TS, max)
     TS2 = STLperArea(ndvi, fac, outfile2, Ystart, 
         period, fct, SGfilter, nSG, DSG)

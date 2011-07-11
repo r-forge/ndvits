@@ -37,3 +37,4 @@ After a process of clipping the images in a particular region, we rename the fil
 }
 \value{Return the time series of the points/polygons in the shapefile over the desired period.}
 \author{Romain Frelat and Bruno Gerard}
+\seealso{\code{\link{TimeSeriesAnalysis}}}

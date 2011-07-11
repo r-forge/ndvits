@@ -79,10 +79,6 @@ none
 \author{
 R. Frelat, B. Gerard
 }
-
-\seealso{
-
-}
 \examples{
 ##---- Should be DIRECTLY executable !! ----
 ##-- ==>  Define data, use random,
