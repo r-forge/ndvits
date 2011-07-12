@@ -15,9 +15,10 @@ sdNA(x)
 \value{Return the standard deviation of \verb{x}}
 \author{Romain Frelat, Bruno Gerard}
 \seealso{
-\code{\link{minNA}}
+\code{\link{minNA}},\code{\link{meanNA}},\code{\link{maxNA}},\code{\link{minNA2}},\code{\link{maxNA2}}
 }
 \examples{
 a=c(15,35,NA)
 sdNA(a)
 }
+\keyword{tools}

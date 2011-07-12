@@ -41,3 +41,4 @@ Jonsson, P. and Eklundh, L. 2004, \emph{Computers & Geosciences}, TIMESAT a prog
 ##-- ==>  Define data, use random,
 ##--	or do  help(data=index)  for the standard data sets.
 }
+\keyword{tools}

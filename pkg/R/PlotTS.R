@@ -16,7 +16,7 @@ function (TS, Ystart, period = 36, title = "NDVI Time Series",
             col = rainbow(length(TS[, 1])))
     }
     else {
-        print("Only one time series : no overlay possible.")
+        stop("Error : only one time series, no overlay possible.")
     }
     if (outfile != FALSE) {
         dev.off()

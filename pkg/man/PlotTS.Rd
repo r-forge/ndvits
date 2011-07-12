@@ -19,4 +19,7 @@ PlotTS(TS, fileout = FALSE, Ystart, period, title = "NDVI time series")
 \author{
 Romain Frelat and Bruno Gerard
 }
-
+\seealso{
+\code{\link{TimeSeriesAnalysis}},\code{\link{OverlayTS}}
+}
+\keyword{plot}

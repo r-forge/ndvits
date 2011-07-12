@@ -26,3 +26,7 @@ Nothing is return, a shapefile is created and saved in the folder \verb{dirshape
 \author{
 Romain Frelat and Bruno Gerard
 }
+\seealso{
+\code{\link{pointtobuffer}}
+}
+\keyword{spatial}

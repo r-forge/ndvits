@@ -15,9 +15,10 @@ meanNA(x)
 \value{Return the mean of \verb{x}}
 \author{Romain Frelat, Bruno Gerard}
 \seealso{
-\code{\link{minNA}}
+\code{\link{minNA}},\code{\link{maxNA}},\code{\link{sdNA}},\code{\link{minNA2}},\code{\link{maxNA2}}
 }
 \examples{
 a=c(15,35,NA)
 meanNA(a)
 }
+\keyword{tools}

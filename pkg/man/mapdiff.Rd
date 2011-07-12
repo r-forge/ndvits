@@ -17,4 +17,4 @@ mapdiff(mapin, mapref, mapsd = FALSE, fileout = "diff.tif")
 Returns the resulting map
 }
 \author{Romain Frelat and Bruno Gerard}
-
+\keyword{spatial}

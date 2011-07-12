@@ -43,3 +43,7 @@ After a process of clipping the images in a particular region, we rename the fil
 }
 \value{Nothing is return, clipped map are saved in the \var{outdirectory}.}
 \author{Romain Frelat and Bruno Gerard}
+\seealso{
+\code{\link{ExtractVGT}}, \code{\link{ExtractVito}}
+}
+\keyword{tools}

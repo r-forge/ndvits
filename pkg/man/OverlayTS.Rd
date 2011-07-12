@@ -20,3 +20,7 @@ This function makes a graph and returns nothing.
 \author{
 Romain Frelat and Bruno Gerard
 }
+\seealso{
+\code{\link{PlotTS}}
+}
+\keyword{plot}

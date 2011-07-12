@@ -37,5 +37,6 @@ The function returns 4 maps containing the statistics
 Romain Frelat and Bruno Gerard
 }
 \seealso{
-\code{\link{mapmaxyear}}
+\code{\link{mapmaxyear}},\code{\link{PeriodAnomaly}},\code{\link{MaxAnomaly}}
 }
+\keyword{spatial}

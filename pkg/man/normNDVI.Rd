@@ -17,3 +17,7 @@ For VITO maxNDVI=255, for GIMMS maxNDVI=10000.}
 }
 \value{The output of normNDVI is a data-frame with the normalized time series.}
 \author{Romain Frelat and Bruno Gerard}
+\seealso{
+\code{\link{TimeSeriesAnalysis}}
+}
+\keyword{tools}

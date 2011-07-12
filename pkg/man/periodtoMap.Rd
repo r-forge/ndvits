@@ -23,3 +23,7 @@ If the map doesn't exist, an error message is printed.
 \author{
 Romain Frelat and Bruno Gerard
 }
+\seealso{
+\code{\link{timetoMap}}
+}
+\keyword{tools}

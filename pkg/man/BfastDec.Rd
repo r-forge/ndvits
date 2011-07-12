@@ -39,8 +39,12 @@ Verbesselt, J., Hyndman, R., Zeileis, A. and Culvenor, D. 2010 \emph{Remote Sens
 \author{
 Romain Frelat and Bruno Gerard
 }
+\seealso{
+\code{\link{STLperArea}}
+}
 \examples{
 ##---- Should be DIRECTLY executable !! ----
 ##-- ==>  Define data, use random,
 ##--	or do  help(data=index)  for the standard data sets.
 }
+\keyword{ts decomposition}

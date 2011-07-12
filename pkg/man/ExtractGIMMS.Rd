@@ -31,3 +31,7 @@ GIMMS nomenclature (from Global Land Cover Facility) : (type=GIMMS)\cr
 }
 \value{Return the time series of the points/polygons in the shapefile over the desired period.}
 \author{Romain Frelat and Bruno Gerard}
+\seealso{
+\code{\link{TimeSeriesAnalysis}}
+}
+\keyword{ts extraction}

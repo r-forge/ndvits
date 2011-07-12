@@ -412,8 +412,7 @@ function (TS, area, fileout = FALSE, Ystart, period = 36, fct = "mean",
         plot(ts(ndviM, start = Ystart, freq = period), ylim = c(0, 
             1), type = "l", xlab = "time", ylab = "NDVI", main = paste("NDVI Time Serie -", 
             fct, "over", length(ndviLoc[, 1]), "points"))
-        mtext(side = 3, text = paste("Spot Vegetation Data -", 
-            i), outer = TRUE, cex = 1.6)
+        mtext(side = 3, text = i, outer = TRUE, cex = 1.6)
         if (SGfilter) {
             filtndvi = sav_gol(ndviM, n = nSG, D = DSG)
             ndviMSG = ts(filtndvi[, 1], start = Ystart, freq = period)
@@ -470,11 +469,13 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart,
                 f = readline(cat(paste("choose between one of the grouping factor available : \n", 
                   list(as.character(info)), "\n : ", sep = "")))
             }
+            fac = as.factor(inPoints[[f]])
         }
     }
     else {
         inPoints = readOGR(shapedir, shapefile)
         fac = as.factor(inPoints$Name)
+        f="name"
     }
     while (!toupper(type) %in% c("GIMMS", "VITO_CLIP", "VITO_VGT", 
         "TEXT", "FILES")) {
@@ -511,7 +512,13 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart,
         max = as.numeric(readline(cat("value maximum ?\n")))
         TS = ExtractFile(shapefile, shapedir, ndvidirectory, outfile, period, ext)
     }
-    fac = as.factor(TS[,f])
+    if (length(grep("olygon", class(inPoints))) > 0) {
+        while (!f %in% names(TS)) {
+                f = readline(cat(paste("error choose between : \n", 
+                  list(as.character(head(names(TS)))), "\n : ", sep = "")))
+        }
+        fac = as.factor(TS[,f])
+    }
     ndvi = normNDVI(TS, max)
     TS2 = STLperArea(ndvi, fac, outfile2, Ystart, 
         period, fct, SGfilter, nSG, DSG)

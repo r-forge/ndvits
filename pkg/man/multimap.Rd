@@ -21,4 +21,7 @@ By default, \verb{objext="shp"}}
   \item{\dots}{optional arguments send to spplot}
 }
 \author{Romain Frelat and Bruno Gerard.}
-
+\seealso{
+\code{\link{savemap}}
+}
+\keyword{plot}

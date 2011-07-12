@@ -35,3 +35,4 @@ Romain Frelat and Bruno Gerard
 ##--	or do  help(data=index)  for the standard data sets.
 #depending on the data available...
 }
+\keyword{spatial}

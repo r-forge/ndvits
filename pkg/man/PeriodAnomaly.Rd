@@ -30,3 +30,7 @@ PeriodAnomaly(ndvidirectory, region, Ystart, Yend, period, namefile = "anomaly",
 explain more here
 }
 \author{Romain Frelat and Bruno Gerard}
+\seealso{
+\code{\link{maplocalstat}},\code{\link{MaxAnomaly}}
+}
+\keyword{anomaly map}

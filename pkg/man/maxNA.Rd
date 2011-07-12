@@ -15,9 +15,10 @@ maxNA(x)
 \value{Return the maximum of \verb{x}}
 \author{Romain Frelat, Bruno Gerard}
 \seealso{
-\code{\link{minNA}}
+\code{\link{maxNA2}},\code{\link{minNA}},\code{\link{meanNA}},\code{\link{sdNA}},\code{\link{minNA2}}
 }
 \examples{
 a=c(15,35,NA)
 maxNA(a)
 }
+\keyword{tools}

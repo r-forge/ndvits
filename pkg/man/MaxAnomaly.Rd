@@ -27,3 +27,7 @@ MaxAnomaly(ndvidirectory, region, Ystart, Yend, namefile = "anomaly", ext = "sho
 The map of the max of each year between \verb{Ystart} and \verb{Yend} is computed. Then, the mean is calculated.  The anomaly map comes from the difference between the mean of the max and the max of the specific year.  It is saved automatically in geotiff and displayed by default (show=TRUE) in the graphic of R.  To go from one graph to another, click on the graph or press enter in the R console.
 }
 \author{Romain Frelat and Bruno Gerard}
+\seealso{
+\code{\link{maplocalstat}},\code{\link{PeriodAnomaly}}
+}
+\keyword{anomaly map}

@@ -23,3 +23,7 @@ If ext="show", the map is not saved but only displayed in R. By default, ext="sh
 \author{
 Romain Frelat and Bruno Gerard
 }
+\seealso{
+\code{\link{multimap}}
+}
+\keyword{plot}

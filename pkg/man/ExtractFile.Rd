@@ -37,3 +37,4 @@ The list of images should be in chronological order, and include the complete pa
 \author{Romain Frelat and Bruno Gerard}
 \section{Warning }{It is the responsability of the user to have complete and ordered dataset : list of images have to be in chronological order and without missing image.}
 \seealso{\code{\link{TimeSeriesAnalysis}},\code{\link{tolist}}}
+\keyword{ts extraction}

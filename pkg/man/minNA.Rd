@@ -15,9 +15,10 @@ minNA(x)
 \value{Return the minimum of \verb{x}}
 \author{Romain Frelat, Bruno Gerard}
 \seealso{
-\code{\link{minNA}}
+\code{\link{minNA2}},\code{\link{meanNA}},\code{\link{maxNA}},\code{\link{sdNA}},\code{\link{maxNA2}}
 }
 \examples{
 a=c(15,35,NA)
 minNA(a)
 }
+\keyword{tools}

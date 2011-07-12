@@ -12,9 +12,12 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
     liM = max(TS)
     lim = min(TS)
     final = c()
+    colnames(TS)=rep(1:period,length(TS[1,])/period)
     for (j in 1:length(TS[, 1])) {
         res = c()
-        plot(ts(TS[j, ], start = Ystart, freq = period), ylim = c(lim, 
+        par()
+        TS[j, ]=as.numeric(TS[j, ])
+        plot(ts(as.numeric(TS[j, ]), start = Ystart, freq = period), ylim = c(lim, 
             liM), type = "l", xlab = "time", ylab = "NDVI", main = paste(rownames(TS)[j], "NDVI Time Series"))
         year = c()
         n = 1
@@ -30,7 +33,7 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                 "NDVI Annual Time Series"), lwd = 3)
         axis(side = 1, at = seq(1, period, period/12), labels = month.abb)
         for (i in 1:length(year[, 1])) {
-            lines(year[i, ], col = rainbow(length(year[, 1]))[i])
+            lines(as.numeric(year[i, ]), col = rainbow(length(year[, 1]))[i])
         }
         legend("bottomright", legend = c("mean", "year"), lwd = c(3, 
             1), col = c("black", "red"))
@@ -67,9 +70,10 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
             }
         }
         abline(v = c(meanM, meanm), lty = 2)
-        text(meanm, -0.1, "min", xpd = "NA", cex = 1.2)
-        text(meanM, -0.1, "max", xpd = "NA", cex = 1.2)
+        text(meanm, -0.1, "min", xpd = NA, cex = 1.2)
+        text(meanM, -0.1, "max", xpd = NA, cex = 1.2)
         if (length(meanM) == 1 & length(meanm) == 1 & mean(meanC) > 0.2 & mean(meanC) < 0.7) {
+            par(cex=0.9)
             Mdm = meanM
             mdm = meanm
             Mm = max(meanC)
@@ -96,10 +100,10 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                     yst)/2),], year[i + yed, 1:ed])
                 }
                 #finding key date in the season
-                M = max(t[(Mdm + st - 2 * (period/12)):(Mdm + 
+                M = max(t[((Mdm - st)%%36 - 2 * (period/12)):(Mdm + 
                   st + 2 * (period/12))])
-                Md = which.max(t[(Mdm + st - 2 * (period/12)):(Mdm + 
-                  st + 2 * (period/12))]) + Mdm + st - 2 * (period/12) - 1
+                Md = which.max(t[((Mdm - st)%%36 - 2 * (period/12)):(Mdm + 
+                  st + 2 * (period/12))]) + ((Mdm - st)%%36 - 2 * (period/12)) - 1
                 ml = min(t[1:(4 * period/12)])
                 mld = which.min(t[1:(4 * period/12)])
                 mr = min(t[(12 * period/12):(16 * period/12)]) 
@@ -125,8 +129,8 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                 arrows(SOS, 0.05, EOS, 0.05, code = 3, length = 0.1)
                 arrows(SOS, -0.5, SOS, t[SOS], length = 0, lty = 2)
                 arrows(EOS, -0.5, EOS, t[EOS], length = 0, lty = 2)
-                text(SOS, -0.1, "SOS", xpd = "NA")
-                text(EOS, -0.1, "EOS", xpd = "NA")
+                text(SOS, -0.14, "SOS", xpd = NA)
+                text(EOS, -0.14, "EOS", xpd = NA)
                 text(mean(c(EOS, SOS)), 0.03, paste("cumNDVI =", 
                   as.character(format(cumNDVI, digits = 5)), 
                   sep = ""))
@@ -147,6 +151,7 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
         }
         if (length(meanM) == 2 & length(meanm) == 2 & mean(meanC) > 0.2 & mean(meanC) < 
             0.7) {
+            par(cex=0.9)
             mdm = meanm[which.min(meanC[meanm])]
             mm = meanC[mdm]
             if (mdm - 2 * (period/12) < 0) {
@@ -176,32 +181,29 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
             mdm2 = meanm[!meanm %in% mdm]
             for (i in (1 - yst):(length(year[, 1]) - 1)) {
                 if (yed - yst == 1) {
-                  t = c(year[i + yst, st:period], year[i + yed, 
-                    1:ed])
-                }
-                else {
-                  t = c(year[i + yst, st:period], year[i + ((yed + 
-                    yst)/2),], year[i + yed, 1:ed])
+                  t = c(as.numeric(year[i + yst, st:period]), as.numeric(year[i + yed, 
+                    1:ed]))
+                } else {
+                  t = c(as.numeric(year[i + yst, st:period]), as.numeric(year[i + ((yed + 
+                    yst)/2),]), as.numeric(year[i + yed, 1:ed]))
                 }
                 #finding key date in the season
-                M1 = max(t[(Mdm + st - 2 * (period/12)):(Mdm + 
-                  st + 2 * (period/12))])
-                Md1 = which.max(t[(Mdm + st - 2 * (period/12)):(Mdm + 
-                  st + 2 * (period/12))]) + Mdm + st - 2 * (period/12) - 1
-                ml1 = min(t[(mdm + st - 2 * (period/12)):(mdm + 
-                  st + 2 * (period/12))])
-                mld1 = which.min(t[(mdm + st - 2 * (period/12)):(mdm + 
-                  st + 2 * (period/12))])+mdm + st - 2 * (period/12) -1
-                M2 = max(t[(Mdm2 + st - 2 * (period/12)):(Mdm2 + 
-                  st + 2 * (period/12))])
-                Md2 = which.max(t[(Mdm2 + st - 2 * (period/12)):(Mdm2 + 
-                  st + 2 * (period/12))]) + Mdm2 + st - 2 * (period/12) - 1
-		ml2 = min(t[(mdm2 + st - 2 * (period/12)):(mdm2 + 
-                  st + 2 * (period/12))])
-                mld2 = which.min(t[(mdm2 + st - 2 * (period/12)):(mdm2 + 
-                  st + 2 * (period/12))])+mdm2 + st - 2 * (period/12) - 1                
-		mr = min(t[(mdm + period + st - 2 * (period/12)):(mdm + period + st + 2 * (period/12) - 1)])
-                mrd = which.min(t[(mdm + period + st - 2 * (period/12)):(mdm + period + st + 2 * (period/12) - 1)])+mdm + period + st - 2 * (period/12) - 1 
+                M1 = max(t[((Mdm - st)%%36 - 2 * (period/12)):((Mdm - st)%%36 
+                  + 2 * (period/12))])
+                Md1 = which.max(t[((Mdm - st)%%36 - 2 * (period/12)):((Mdm - st)%%36 
+                  + 2 * (period/12))]) + ((Mdm - st)%%36 - 2 * (period/12)) - 1
+                ml1 = min(t[1 : (4 * (period/12)+1)])
+                mld1 = which.min(t[1 : (4 * (period/12+1))])
+                M2 = max(t[((Mdm2 - st)%%36 - 2 * (period/12)):((Mdm2 - st)%%36 
+                  + 2 * (period/12))])
+                Md2 = which.max(t[((Mdm2 - st)%%36 - 2 * (period/12)):((Mdm2 - st)%%36 
+                  + 2 * (period/12))]) + ((Mdm2 - st)%%36 - 2 * (period/12)) - 1
+                ml2 = min(t[((mdm2 - st)%%36 - 2 * (period/12)):((mdm2 - st)%%36 
+                  + 2 * (period/12))])
+                mld2 = which.min(t[((mdm2 - st)%%36 - 2 * (period/12)):((mdm2 - st)%%36 
+                  + 2 * (period/12))]) + ((mdm2 - st)%%36 - 2 * (period/12)) - 1
+		mr = min(t[(12 * (period/12)):(16* (period/12)+1)])
+                mrd = which.min(t[(12 * (period/12)):(16* (period/12)+1)])+12 * (period/12) - 1 
                 #calculate metrics season 1
                 SOS1t = ml1 + SOSth * (M1 - ml1)
                 SOS1 = mld1 + which(t[mld1:Md1] > SOS1t)[1] - 1
@@ -219,9 +221,12 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                 plot(1:length(t), t, type = "l", 
                   xaxt = "n", ylim = c(0, liM), xlab = "time", 
                   ylab = "SG filtered NDVI", main = paste(rownames(TS)[j], 
-                    "NDVI Series", rownames(year)[i], "-", rownames(year)[i + 
-                      1]))
-                axis(side = 1, at = seq(((st*12)%%period)/12+1, 16*period/12,period/12), labels = rep(month.abb, 2)[((st*12)%/%period+1):((ed*12)%/%period+12)])
+                    "NDVI Series", rownames(year)[i+yst], "-", rownames(year)[i + yed]))
+                if (yed - yst == 1) {
+                    axis(side = 1, at = seq(((st*12)%%period)/12+1, 16*period/12,period/12), labels = rep(month.abb, 2)[((st*12)%/%period+1):((ed*12)%/%period+12)])
+                } else {
+                    axis(side = 1, at = seq(((st*12)%%period)/12+1, 16*period/12,period/12), labels = rep(month.abb, 3)[((st*12)%/%period+1):((ed*12)%/%period+24)])
+                }
                 points(x = Md1, y = M1, col = "green", pch = 3)
                 points(x = mld1, y = ml1, col = "red", pch = 3)
                 points(x = Md2, y = M2, col = "green", pch = 3)
@@ -237,8 +242,8 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                 arrows(SOS2, 0.05, EOS2, 0.05, code = 3, length = 0.1)
                 arrows(SOS2, -0.5, SOS2, t[SOS2], length = 0, lty = 2)
                 arrows(EOS2, -0.5, EOS2, t[EOS2], length = 0, lty = 2)
-                text(c(SOS1,SOS2), -0.1, "SOS", xpd = "NA")
-                text(c(EOS1,EOS2), -0.1, "EOS", xpd = "NA")
+                text(c(SOS1,SOS2), -0.14, "SOS", xpd = NA)
+                text(c(EOS1,EOS2), -0.14, "EOS", xpd = NA)
                 text(mean(c(EOS1, SOS1)), 0.03, paste("cumNDVI =", 
                   as.character(format(cumNDVI1, digits = 5)), 
                   sep = ""))
@@ -249,7 +254,7 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
             }
             res = as.data.frame(res)
             names(res) = c("\tml1", "mld1", "M1", "Md1", "ml2", "mld2", "M2", "Md2", "SOS1t", "SOS1", "EOS1t", "EOS1", "LOS1", "cumNDVI1", "SOS2t", "SOS2", "EOS2t", "EOS2", "LOS2", "cumNDVI2", "cumNDVI-tot")
-            rownames(res) = Ystart:(Ystart + length(year[, 1]) - 2)
+            rownames(res) = rownames(year)[(1 - yst):(length(year[, 1]) - 1)]
             write(rownames(TS)[j], outfile, append = TRUE, sep = "")
             write.table(res, outfile, quote = FALSE, row.names = TRUE, append = TRUE, sep = "\t")
         }
@@ -257,5 +262,4 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
     if (outgraph != FALSE) {
             dev.off()
     }
-    return(res)
 }

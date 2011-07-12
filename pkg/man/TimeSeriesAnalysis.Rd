@@ -79,8 +79,13 @@ none
 \author{
 R. Frelat, B. Gerard
 }
+\seealso{
+\code{\link{ExtractFile}},\code{\link{ExtractGIMMS}},\code{\link{ExtractVGT}},\code{\link{ExtractVito}},
+\code{\link{normNDVI}},\code{\link{PlotTS}},\code{\link{STLperArea}}
+}
 \examples{
 ##---- Should be DIRECTLY executable !! ----
 ##-- ==>  Define data, use random,
 ##--	or do  help(data=index)  for the standard data sets.
 }
+\keyword{ts extraction}
