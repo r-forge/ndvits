@@ -1,12 +1,12 @@
 "ExtractFile" <-
-function (shapefile, shapedir, listfile, outfile, period, ext = "shp") 
+function (shapefile, shapedir, listfile, outfile, period, shapeext = "shp") 
 {
     list=read.table(listfile, header = FALSE, sep="\t")
     nts=as.numeric(as.character(list[1,1]))
     if (is.na(nts) | length(list[,1])<nts+1) {
         stop("The file is not in the good format. The first line should contain the number of images to be processed.")
     }
-    if (ext == "shp") {
+    if (shapeext == "shp") {
         inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
     }
     else {
@@ -34,7 +34,7 @@ function (shapefile, shapedir, listfile, outfile, period, ext = "shp")
             }   
         }
     }
-    if (ext == "shp") {
+    if (shapeext == "shp") {
         if (length(grep("oint", class(inPoints))) > 0) {
             all = data.frame(inPoints[names(inPoints)], ndvits)
         }
@@ -74,18 +74,18 @@ function (shapefile, shapedir, listfile, outfile, period, ext = "shp")
 
 "ExtractGIMMS" <-
 function (shapefile, shapedir, ndvidirectory, region, outfile, 
-    Ystart, Yend, ext = "shp") 
+    Ystart, Yend, shapeext = "shp") 
 {
     while (!toupper(region) %in% c("AF", "AZ", "EA", "NA", "SA", 
         "")) {
         region = readline(cat("Region is not correct. Please choose between AF, AZ, EA, NA and SA. \n"))
     }
-    while (!tolower(ext) %in% c("shp", "kml")) {
-        ext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
-        if (ext == "") 
+    while (!tolower(shapeext) %in% c("shp", "kml")) {
+        shapeext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
+        if (shapeext == "") 
             return()
     }
-    if (ext == "shp") {
+    if (shapeext == "shp") {
         inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
     }
     else {
@@ -147,13 +147,13 @@ function (shapefile, shapedir, ndvidirectory, region, outfile,
                     sep = ""))
                 }
                 else {
-                  print(paste("The type of the ", ext, " file is unknown.", 
+                  print(paste("The type of the ", shapeext, " file is unknown.", 
                     sep = ""))
                 }
             }
         }
     }
-    if (ext == "shp") {
+    if (shapeext == "shp") {
         if (length(grep("oint", class(inPoints))) > 0) {
             all = data.frame(inPoints[names(inPoints)], ndvits)
         }
@@ -187,14 +187,14 @@ function (shapefile, shapedir, ndvidirectory, region, outfile,
 }
 "ExtractVGT" <-
 function (shapefile, shapedir, ndvidirectory, region, outfile = "TS.txt", 
-    Ystart, Yend, ext = "shp") 
+    Ystart, Yend, shapeext = "shp") 
 {
-    while (!tolower(ext) %in% c("shp", "kml")) {
-        ext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
-        if (ext == "") 
+    while (!tolower(shapeext) %in% c("shp", "kml")) {
+        shapeext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
+        if (shapeext == "") 
             return()
     }
-    if (ext == "shp") {
+    if (shapeext == "shp") {
         inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
     }
     else {
@@ -246,7 +246,7 @@ function (shapefile, shapedir, ndvidirectory, region, outfile = "TS.txt",
             }
         }
     }
-    if (ext == "shp") {
+    if (shapeext == "shp") {
         if (length(grep("oint", class(inPoints))) > 0) {
             all = data.frame(inPoints[names(inPoints)], ndvits)
         }
@@ -280,14 +280,14 @@ function (shapefile, shapedir, ndvidirectory, region, outfile = "TS.txt",
 }
 "ExtractVito" <-
 function (shapefile, shapedir, ndvidirectory, region, outfile = "TS.txt", 
-    Ystart, Yend, ext = "shp") 
+    Ystart, Yend, shapeext = "shp") 
 {
-    while (!tolower(ext) %in% c("shp", "kml")) {
-        ext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
-        if (ext == "") 
+    while (!tolower(shapeext) %in% c("shp", "kml")) {
+        shapeext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
+        if (shapeext == "") 
             return()
     }
-    if (tolower(ext) == "shp") {
+    if (tolower(shapeext) == "shp") {
         inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
     }
     else {
@@ -344,7 +344,7 @@ function (shapefile, shapedir, ndvidirectory, region, outfile = "TS.txt",
             }
         }
     }
-    if (ext == "shp") {
+    if (shapeext == "shp") {
         if (length(grep("oint", class(inPoints))) > 0) {
             all = data.frame(inPoints[names(inPoints)], ndvits)
         }
@@ -410,8 +410,8 @@ function (TS, area, fileout = FALSE, Ystart, period = 36, fct = "mean",
         ndviLoc = TS[area == i, ]
         ndviM = apply(ndviLoc, 2, fct)
         plot(ts(ndviM, start = Ystart, freq = period), ylim = c(0, 
-            1), type = "l", xlab = "time", ylab = "NDVI", main = paste("NDVI Time Serie -", 
-            fct, "over", length(ndviLoc[, 1]), "points"))
+            1), type = "l", xlab = "time", ylab = "NDVI", main = 
+            paste("NDVI Time Serie -", fct, "over", length(ndviLoc[, 1]), "points"))
         mtext(side = 3, text = i, outer = TRUE, cex = 1.6)
         if (SGfilter) {
             filtndvi = sav_gol(ndviM, n = nSG, D = DSG)
@@ -434,7 +434,7 @@ function (TS, area, fileout = FALSE, Ystart, period = 36, fct = "mean",
             ndviMSG = ts(ndviM, start = Ystart, freq = period)
         }
         title = c(i, paste(fct, filt, "NDVI time series"))
-        plot(stl(ndviMSG, s.window = "periodic"), main = title)
+        plot(stl(ndviMSG, s.window = "periodic"), main = title, robust=TRUE, na.action=na.approx)
         finalndvi = rbind(finalndvi, ndviMSG)
         rownames(finalndvi) = c(rownames(finalndvi)[-length(finalndvi[, 
             1])], i)
@@ -449,15 +449,15 @@ function (TS, area, fileout = FALSE, Ystart, period = 36, fct = "mean",
 "TimeSeriesAnalysis" <-
 function (shapefile, shapedir, ndvidirectory, region, Ystart, 
     Yend, outfile = "TS.txt", outfile2 = "TS.pdf", outfile3 = FALSE, 
-    ext = "shp", fct = "mean", SGfilter = TRUE, nSG = "5,5", 
-    DSG = 0, title = "NDVI time series", type = "VITO_CLIP") 
+    shapeext = "shp", fct = "mean", SGfilter = TRUE, nSG = "5,5", 
+    DSG = 0, title = "NDVI time series", type = "VITO_CLIP", nb = 5) 
 {
-    while (!tolower(ext) %in% c("shp", "kml")) {
-        ext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
-        if (ext == "") 
+    while (!tolower(shapeext) %in% c("shp", "kml")) {
+        shapeext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
+        if (shapeext == "") 
             return()
     }
-    if (tolower(ext) == "shp") {
+    if (tolower(shapeext) == "shp") {
         inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
         info = names(inPoints)
         if (length(info) == 1) {
@@ -485,19 +485,19 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart,
     }
     if (toupper(type) == "VITO_CLIP") {
         TS = ExtractVito(shapefile, shapedir, ndvidirectory, 
-            region, outfile, Ystart, Yend, ext)
+            region, outfile, Ystart, Yend, shapeext)
         period = 36
         max = 255
     }
     if (toupper(type) == "VITO_VGT") {
         TS = ExtractVGT(shapefile, shapedir, ndvidirectory, region, 
-            outfile, Ystart, Yend, ext)
+            outfile, Ystart, Yend, shapeext)
         period = 36
         max = 255
     }
     if (toupper(type) == "GIMMS") {
         TS = ExtractGIMMS(shapefile, shapedir, ndvidirectory, 
-            region, outfile, Ystart, Yend, ext)
+            region, outfile, Ystart, Yend, shapeext)
         period = 24
         max = 10000
     }
@@ -510,7 +510,7 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart,
     if (toupper(type) == "FILES") {
         period = as.numeric(readline(cat("how many observation per year ?\n")))
         max = as.numeric(readline(cat("value maximum ?\n")))
-        TS = ExtractFile(shapefile, shapedir, ndvidirectory, outfile, period, ext)
+        TS = ExtractFile(shapefile, shapedir, ndvidirectory, outfile, period, shapeext)
     }
     if (length(grep("olygon", class(inPoints))) > 0) {
         while (!f %in% names(TS)) {
@@ -522,6 +522,6 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart,
     ndvi = normNDVI(TS, max)
     TS2 = STLperArea(ndvi, fac, outfile2, Ystart, 
         period, fct, SGfilter, nSG, DSG)
-    PlotTS(TS2, outfile3, Ystart, period, title)
+    PlotTS(TS2, outfile3, Ystart, period, title, nb)
     return(TS2)
 }

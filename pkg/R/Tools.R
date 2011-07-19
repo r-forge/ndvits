@@ -190,7 +190,7 @@ function (ndvidirectory, region, year, period, type="VITO_CLIP")
 }
     
 tolist <- 
-function(ndvidirectory, region, Ystart, Yend, outfile="list.txt", type = "VITO_VGT")
+function(ndvidirectory, region, Ystart, Yend, outfile="list.txt", type = "VITO_CLIP")
 {
     period=ifelse(type=="GIMMS",24,36)
     filein=c()

@@ -23,57 +23,37 @@ function (TS, Ystart, period = 36, title = "NDVI Time Series",
     }
 }
 "PlotTS" <-
-function (TS, fileout = FALSE, Ystart, period, title = "NDVI time series") 
+function (TS, outfile = FALSE, Ystart, period, title = "NDVI time series", 
+    nb = 5 )
 {
     liM = max(TS)+0.05
     lim = min(TS)
-    if (fileout != FALSE) {
-        pdf(fileout)
+    if (outfile != FALSE) {
+        pdf(outfile)
     }
-    if (length(TS[, 1]) < 7) {
-        par(mfrow = c(length(TS[, 1]), 1), mar = c(0, 4.1, 0, 
-            2.1), oma = c(8, 2, 8, 2))
-        for (i in 1:length(TS[, 1])) {
-            plot(ts(as.numeric(TS[i, ]), start = Ystart, freq = period), 
-                ylim = c(lim, liM), type = "l", xlab = "", xaxt = "n", 
-                , yaxt = "n", ylab = "")
-            axis(side = ifelse(i%%2 == 1, 2, 4), at = seq(round(lim, 
-                1), round(liM, 1), 0.1), labels = seq(round(lim, 
-                1), round(liM, 1), 0.1))
-            mtext("NDVI", side = ifelse(i%%2 == 1, 2, 4), line = 3, 
-                cex = 0.7)
-            text((Ystart + length(TS[1, ])/(2 * period)), liM - 
-                0.025, rownames(TS)[i], xpd = "NA", cex = 1)
-        }
-        axis(side = 1, at = seq(Ystart, 2009, 1), labels = seq(Ystart, 
-            2009, 1))
-        mtext(title, side = 3, line = 3, outer = TRUE)
+    if (length(TS[, 1]) > nb & outfile == FALSE) {
+        par(ask = TRUE)
     }
-    else {
-        par(mfrow = c(5, 1), mar = c(0, 4.1, 0, 2.1), oma = c(8, 
-            2, 8, 2))
-        if (fileout == FALSE) {
-            par(ask = TRUE)
-        }
-        for (i in 1:length(TS[, 1])) {
-            plot(ts(as.numeric(TS[i, ]), start = Ystart, freq = period), 
-                ylim = c(lim, liM), type = "l", xlab = "", xaxt = "n", 
-                , yaxt = "n", ylab = "")
-            axis(side = ifelse(i%%2 == 1, 2, 4), at = seq(round(lim, 
-                1), round(liM, 1), 0.1), labels = seq(round(lim, 
-                1), round(liM, 1), 0.1))
-            mtext("NDVI", side = ifelse(i%%2 == 1, 2, 4), line = 3, 
-                cex = 0.7)
-            text((Ystart + length(TS[1, ])/(2 * period)), liM - 
-                0.025, rownames(TS)[i], xpd = "NA", cex = 1)
-            if (i%%5 == 0 || i == length(TS[, 1])) {
-                axis(side = 1, at = seq(Ystart, 2009, 1), labels = seq(Ystart, 
-                  2009, 1))
-                mtext(title, side = 3, line = 3, outer = TRUE)
-            }
+    par(mfrow = c(nb, 1), mar = c(0, 4.1, 0, 
+        2.1), oma = c(8, 2, 8, 2))
+    for (i in 1:length(TS[, 1])) {
+        plot(ts(as.numeric(TS[i, ]), start = Ystart, freq = period), 
+            ylim = c(lim, liM), type = "l", xlab = "", xaxt = "n", 
+            , yaxt = "n", ylab = "")
+        axis(side = ifelse(i%%2 == 1, 2, 4), at = seq(round(lim, 
+            1), round(liM, 1), 0.1), labels = seq(round(lim, 
+            1), round(liM, 1), 0.1))
+        mtext("NDVI", side = ifelse(i%%2 == 1, 2, 4), line = 3, 
+            cex = 0.7)
+        text((Ystart + length(TS[1, ])/(2 * period)), liM - 
+            0.025, rownames(TS)[i], xpd = "NA", cex = 1)
+        if (i%%nb == 0 || i == length(TS[, 1])) {
+            axis(side = 1, at = seq(Ystart, 2009, 1), labels = seq(Ystart, 
+                2009, 1))
+            mtext(title, side = 3, line = 3, outer = TRUE)
         }
     }
-    if (fileout != FALSE) {
+    if (outfile != FALSE) {
         dev.off()
     }
 }

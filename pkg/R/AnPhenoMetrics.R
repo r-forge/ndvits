@@ -12,6 +12,8 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
     liM = max(TS)
     lim = min(TS)
     final = c()
+    ret=c()
+    ret$names=rownames(TS)
     colnames(TS)=rep(1:period,length(TS[1,])/period)
     for (j in 1:length(TS[, 1])) {
         res = c()
@@ -146,6 +148,15 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                 "EOSt", "EOS", "LOS", "cumNDVI", "cumNDVI-mean", "diffMax")
             rownames(res) = Ystart:(Ystart + length(year[, 1]) - 
                 2)
+            if (is.null(ret$year)) {
+                ret$year=Ystart:(Ystart + length(year[, 1]) - 2)
+            }
+            ret$mld=cbind(ret$mld,res$mld)
+            ret$M=cbind(ret$M,res$M)
+            ret$SOS=cbind(ret$SOS,res$SOS)
+            ret$EOS=cbind(ret$EOS,res$EOS)
+            ret$LOS=cbind(ret$LOS,res$LOS)
+            ret$cumNDVI=cbind(ret$cumNDVI,res$cumNDVI)
             write(rownames(TS)[j], outfile, append = TRUE, sep = "")
             write.table(res, outfile, quote = FALSE, row.names = TRUE, append = TRUE, sep = "\t")
         }
@@ -262,4 +273,5 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
     if (outgraph != FALSE) {
             dev.off()
     }
+    return(ret)
 }
