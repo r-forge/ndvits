@@ -17,16 +17,15 @@ tolist(ndvidirectory, region, Ystart, Yend, outfile = "list.txt", type = "VITO_V
   \item{type}{type of data. VITO_CLIP,VITO_VGT or GIMMS}
 }
 \details{
-The format of the output file is as follows:
-\verb{N}
-\verb{path\image1.tif}
-\verb{path\image2.tif}
-\verb{...}
-\verb{path\imageN.tif}
-with \verb{N} the number of image files. 
+The format of the output file is as follows:\cr
+\verb{N}\cr
+\verb{path\image1.tif}\cr
+\verb{path\image2.tif}\cr
+\verb{...}\cr
+\verb{path\imageN.tif}\cr
+with \verb{N} the number of image files. \cr
 File names of image are in chronological order.
 It is important, for further utilisation, that \var{ndvidirectory} include the complete path to the file. 
-
 }
 \value{
 Nothing return.

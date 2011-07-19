@@ -70,6 +70,34 @@ By default, title="NDVI time series".
 type of data. VITO_CLIP,VITO_VGT,GIMMS, TEXT or FILES
 }
 }
+\details{
+More about the variable \var{type} : \cr
+\var{type}=GIMMS : nomenclature from Global Land Cover Facility \cr
+\verb{[RE][YY][MMM][DDD].[SAT]-VIg.tif }
+\itemize{
+\item{RE}{identifies the continent (AF for Africa,AZ for Australia and New Zealand, EA for Eurasia, NA for North America and SA for South America and Central America)}
+\item{YY}{the two last digits of the year}
+\item{MMM}{three-letter abbreviation of the month}
+\item{DDD}{identifies the composite period, 15a denotes the days 1-15 of the month, and 15b denotes the days from 16 to the end of the month.}
+\item{SAT}{identifies the satellite, NOAA-7, 9, 11, 14, 16, or 17 from which the data originated.\cr}
+}
+\var{type}=VITO_VGT : FreeVGT VITO's nomenclature \cr
+\verb{NDV_[YYYYMMDD]_[REGION]_Extract.tif }
+\itemize{
+\item{YYYY}{identifies the year (four digits)}
+\item{MM}{identifies the months (two digits)}
+\item{DD}{identifies the date of the period : "01", "11" or "21" (10-day composite).}
+\item{REGION}{idendifies the region selected while extracting maps\cr}
+}
+\var{type}=VITO_CLIP : nomenclature after clipping the images in a particular region.\cr
+\verb{[REGION][YYYY]M[MM]P[D].tif }
+\itemize{
+\item{REGION}{the region as entered while clipping data.}
+\item{YYYY}{identifies the year (four digits)}
+\item{MM}{identifies the months (two digits)}
+\item{D}{identifies the period (0, 1 or 2).}
+}
+}
 \value{
 signal : Time series.
 }

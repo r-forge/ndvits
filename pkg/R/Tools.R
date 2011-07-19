@@ -35,6 +35,9 @@ function (x)
         else return(min(x))
     }
 }
+#readpartGDAL -------------------------------------------------
+#Load geotiff maps partially, only the area of interest 
+#delimited by xlim and ylim.
 "readpartGDAL" <-
 function (x, xlim = NULL, ylim = NULL, ...) 
 {
@@ -75,24 +78,25 @@ function (x)
 {
     return(sd(x[!is.na(x)]))
 }
+
+#shapelim -----------------------------------------------------
+#Returns the limits of the area of a shape/kml file
 "shapelim" <-
-function (shape, shapedir, ext = "shp", around = 0.05) 
+function (shapefile, shapedir, shapeext = "shp", around = 0.05) 
 {
-	while (!tolower(ext) %in% c("shp", "kml")) {
-        ext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
-        if (ext == "") 
+	while (!tolower(shapeext) %in% c("shp", "kml")) {
+        shapeext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
+        if (shapeext == "") 
             return()
     }
-    if (ext == "shp") {
-        inPoints = readOGR(paste(shapedir, ".", sep = ""), shape)
+    if (shapeext == "shp") {
+        inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
     }
     else {
-        Temp = readOGR(shapedir, shape)
-        if (length(grep("oint", class(Temp))) > 0) 
-            inPoints = SpatialPoints(coords = coordinates(Temp)[, 
-                1:2], proj4string = CRS(proj4string(Temp)))
-        if (length(grep("olygon", class(Temp))) > 0) 
-            inPoints = Temp
+        inPoints = readOGR(shapedir, shapefile)
+    }
+    if (dim(coordinates(inPoints))[2] > 2) {
+        inPoints = SpatialPointsDataFrame(coords = coordinates(inPoints) [, 1:2], proj4string = CRS(proj4string(inPoints)), data = as.data.frame(inPoints[names(inPoints)]))
     }
     res = c()
     res$xlim = bbox(inPoints)[1, ] + c(-around, around)
@@ -160,6 +164,8 @@ function (ndvidirectory, region, year, month, period, type="VITO_CLIP")
     }
 }
 
+#periodtoMap --------------------------------------------------
+#Returns the full path of the map of a given period and a given year.
 periodtoMap <- 
 function (ndvidirectory, region, year, period, type="VITO_CLIP") 
 {

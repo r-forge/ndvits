@@ -1,38 +1,45 @@
 \name{readpartGDAL}
 \alias{readpartGDAL}
-\title{
-partial read of GDAL map 
-}
+\title{partial readGDAL}
 \description{
-Load geotiff maps partially}
-\usage{
-readpartGDAL(x, xlim = NULL, ylim = NULL, ...)
-}
-%- maybe also 'usage' for other objects documented here.
+Load geotiff maps partially, only the area of interest delimited by \var{xlim} and \var{ylim}.}
+\usage{readpartGDAL(x, xlim = NULL, ylim = NULL, ...)}
 \arguments{
-  \item{x}{
-complete directory of the map to load
-}
+  \item{x}{full path to the map to be loaded}
   \item{xlim}{
-longitude of the area to load.\cr
-If nothing enter (xlim=NULL), the map is load entirely.
+a two dimensions vector containing the longitude limits of the area of interest.\cr
+\var{xlim}=NULL indicates no longitude limits. By default, \var{xlim}=NULL.\cr
+Please note that \var{xlim} have to be in the same units and projection as the ndvi maps.
 }
   \item{ylim}{
-latitude of the area to load.\cr
-If nothing enter (xlim=NULL), the map is load entirely.
+a two dimensions vector containing the latitude limits of the area of interest.\cr
+\var{ylim}=NULL indicates no longitude limits. By default, \var{ylim}=NULL.\cr
+Please note that \var{ylim} have to be in the same units and projection as the ndvi maps.
 }
-  \item{\dots}{optional arguments send to readGDAL}
+  \item{\dots}{further arguments sent to \code{\link{readGDAL}}.
+}
 }
 \value{
-Returns the map of the desired area.
+Returns the map of the region of interest.
 }
 \author{
 Romain Frelat and Bruno Gerard
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-#depending on the data available...
+library(ndvits)
+# Local variables
+ndvidirectory=paste(system.file("extdata/VITO_Mzimba", package="ndvits"), "/", sep="")
+region="Mzimba"
+year=2004
+#Define the limit of the area of interest :
+xlim=c(33.5, 33.6)
+ylim=c(-11.6, -11.4)
+#call timetoMap to get the full path to the image
+filein=timetoMap(ndvidirectory,region, year, 1, 1)
+
+map = readpartGDAL(filein, xlim, ylim)
+
+#display the loaded map
+savemap(map)
 }
 \keyword{spatial}

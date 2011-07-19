@@ -23,13 +23,13 @@ For a kml file in "C:\\Dir\\name.kml" , write "C:\\\\Dir\\\\name.kml" .}
 By default, ext="shp".}
 }
 \details{
-\var{listfile} should respect the following format :
-\verb{N}
-\verb{path\image1.tif}
-\verb{path\image2.tif}
-\verb{...}
-\verb{path\imageN.tif}
-with \verb{N} the number of image files. 
+\var{listfile} should respect the following format :\cr
+\verb{N}\cr
+\verb{path\image1.tif}\cr
+\verb{path\image2.tif}\cr
+\verb{...}\cr
+\verb{path\imageN.tif}\cr
+with \verb{N} the number of image files. \cr
 
 The list of images should be in chronological order, and include the complete path to the file, unless the files are located in the working directory from which R is run. Only the N first images in the file will be processed.
 }

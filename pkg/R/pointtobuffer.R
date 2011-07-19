@@ -1,10 +1,9 @@
 "pointtobuffer" <-
-function (shapefile, shapedir, ndvidirectory, region, Ystart, ext ="shp",
-    nameshape = "buffer", dirshape = ".", rad = 1, type = "VITO_CLIP") 
+function (shapefile, shapedir, ndvidirectory, region, Ystart, shapeext ="shp", outshape = "buffer", outdir = ".", rad = 1, type = "VITO_CLIP") 
 {
-    while (!tolower(ext) %in% c("shp", "kml")) {
-        ext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
-        if (ext == "") 
+    while (!tolower(shapeext) %in% c("shp", "kml")) {
+        shapeext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))
+        if (shapeext == "") 
             stop("Error : extension of the shape/kml file is not correct.")
     }
     while (!toupper(type) %in% c("GIMMS", "VITO_CLIP", "VITO_VGT")) {
@@ -12,7 +11,7 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart, ext ="shp",
         if (type == "") 
             stop("Error : type of data is not correct.")
     }
-    if (ext == "shp") {
+    if (shapeext == "shp") {
         inPoints = readOGR(paste(shapedir, ".", sep = ""), shapefile)
     }
     else {
@@ -52,5 +51,5 @@ function (shapefile, shapedir, ndvidirectory, region, Ystart, ext ="shp",
     names(data) = substr(names(data), 1, 10)
     res = SpatialPointsDataFrame(coords = coord, proj4string = CRS(proj4string(inPoints)), 
         data = as.data.frame(data))
-    writeOGR(res, dirshape, layer = nameshape, driver = "ESRI Shapefile")
+    writeOGR(res, outdir, layer = outshape, driver = "ESRI Shapefile")
 }
