@@ -5,29 +5,34 @@
 Breaks for Additive Seasonal and Trend
 }
 \usage{
-BfastDec(TS, Ystart, period, param = c(), fileout = FALSE, ...)
+BfastDec(TS, Ystart, period, param, outfile = FALSE, ...)
 }
 \arguments{
-  \item{TS}{
-time serie or matrix of time serie containing only NDVI data (can be a single time series or multiple). 
+  \item{TS}{matrix or data.frame containing the time series (one row per time series).
 }
   \item{Ystart}{
-start year of the ndvi data.
+starting year of the analysis (in four-digit format).
 }
   \item{period}{
-number of observations per year (for vito, period=36).
+number of observations per year. \cr
+For VGT's dataset : \var{period}=36, GIMMS's dataset: \var{period}=24.
 }
   \item{param}{
-parameters for Bfast decomposition
+list of parameters for Bfast decomposition
+$season : "harmonic" or "dummy"
+By default, param$season = "harmonic".
+$h 
+By default, param$h = period * 2/(length(as.numeric(TS[1, ]))).
+$maxi 
+By default, param$maxi = 10.
 }
-  \item{fileout}{
-file where graphs are saved (extension "pdf")\\
-If fileout=FALSE, the graphs are shown in R. By default, fileout=FALSE.
+  \item{outfile}{
+name of the file where the decomposition graphs are saved (extension ".pdf").\cr
+If \var{outfile} = FALSE, the graphs are shown in R. By default, \var{outfile}=FALSE.
 }
-  \item{\dots}{optional arguments send to Bfast function}
+  \item{\dots}{further arguments sent to \verb{Bfast} function.}
 }
 \value{
-to be explained
 res$seas
 res$trend
 }
@@ -43,8 +48,10 @@ Romain Frelat and Bruno Gerard
 \code{\link{STLperArea}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+data(SLPSAs_ts)
+
+#Be carefull, BFAST Decomposition takes a long time
+#BfastDec(SLPSAs_ts$ts, Ystart=SLPSAs_ts$Ystart, 
+#    period=SLPSAs_ts$period)
 }
 \keyword{ts decomposition}

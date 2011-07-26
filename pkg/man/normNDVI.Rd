@@ -8,9 +8,9 @@ Compute NDVI values (between 0 and 1) depending on the coding systems of the map
 normNDVI(TS, maxNDVI)
 }
 \arguments{
-  \item{TS}{time series extracted}
+  \item{TS}{gross time series extracted}
   \item{maxNDVI}{maximum of the NDVI values (depending on how they are coded).
-For VITO maxNDVI=255, for GIMMS maxNDVI=10000.}
+For VGT's dataset \var{maxNDVI}=255, for GIMMS's dataset \var{maxNDVI}=10000.}
 }
 \details{
 \deqn{\frac{TS}{maxNDVI}}
@@ -19,5 +19,9 @@ For VITO maxNDVI=255, for GIMMS maxNDVI=10000.}
 \author{Romain Frelat and Bruno Gerard}
 \seealso{
 \code{\link{TimeSeriesAnalysis}}
+}
+\examples{
+data(SLPSAs_full)
+ts = normNDVI(SLPSAs_full$full, SLPSAs_full$maxNDVI)
 }
 \keyword{tools}

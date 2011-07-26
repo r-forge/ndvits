@@ -1,5 +1,5 @@
 "BfastDec" <-
-function (TS, Ystart, period, param = c(), fileout = FALSE, ...) 
+function (TS, Ystart, period, param = c(), outfile = FALSE, ...) 
 {
     if (!require(bfast)) {
         return()
@@ -10,8 +10,8 @@ function (TS, Ystart, period, param = c(), fileout = FALSE, ...)
         param$h = period * 2/(length(as.numeric(TS[1, ])))
     if (is.null(param$maxi)) 
         param$maxi = 10
-    if (fileout != FALSE) {
-        pdf(fileout)
+    if (outfile != FALSE) {
+        pdf(outfile)
     }
     else {
         par(ask = TRUE)
@@ -26,7 +26,7 @@ function (TS, Ystart, period, param = c(), fileout = FALSE, ...)
         seas = c(seas, Ystart + as.numeric(fit$output[[1]]$bp.Wt$breakpoints)/period)
         trend = c(trend, Ystart + as.numeric(fit$output[[1]]$bp.Vt$breakpoints)/period)
     }
-    if (fileout != FALSE) {
+    if (outfile != FALSE) {
         dev.off()
     }
     res = c()

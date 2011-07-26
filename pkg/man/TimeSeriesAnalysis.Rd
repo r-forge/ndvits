@@ -11,7 +11,7 @@ TimeSeriesAnalysis(shapefile, shapedir, ndvidirectory, region,
     Ystart, Yend, outfile = "TS.txt", outfile2 = "TS.pdf", 
     outfile3 = FALSE, shapeext = "shp", fct = "mean", 
     SGfilter = TRUE, nSG = "5,5", DSG = 0, 
-    title = "NDVI time series", type = "VITO_CLIP", nb = 5)
+    title = "NDVI time series", type = "VITO_CLIP", nb = NULL)
 }
 \arguments{
   \item{shapefile}{
@@ -79,7 +79,8 @@ type of nomenclature followed by the NDVI images : "GIMMS", "VITO_VGT", "VITO_CL
 By default, \var{type} = "VITO_CLIP".
 }
   \item{nb}{
-number of time series plotted in the same graph by the function \code{\link{PlotTS}} saved in the file \var{outfile3}. By default, \var{nb} = 5.
+number of time series plotted in the same graph by the function \code{\link{PlotTS}} saved in the file \var{outfile3}. 
+By default, \var{nb} = NULL : will be automatically chosen depending on the number of time series.
 }
 }
 \details{

@@ -386,7 +386,7 @@ function (TS, maxNDVI)
     return(ndvi)
 }
 "STLperArea" <-
-function (TS, area, fileout = FALSE, Ystart, period = 36, fct = "mean", 
+function (TS, area, outfile = FALSE, Ystart, period = 36, fct = "mean", 
     SGfilter = TRUE, nSG = "5,5", DSG = 0) 
 {
     if (!require(RTisean)) {
@@ -399,8 +399,8 @@ function (TS, area, fileout = FALSE, Ystart, period = 36, fct = "mean",
     }
     finalndvi = c()
     area = as.factor(area)
-    if (fileout != FALSE) {
-        pdf(fileout)
+    if (outfile != FALSE) {
+        pdf(outfile)
     }
     else {
         par(ask = TRUE)
@@ -439,7 +439,7 @@ function (TS, area, fileout = FALSE, Ystart, period = 36, fct = "mean",
         rownames(finalndvi) = c(rownames(finalndvi)[-length(finalndvi[, 
             1])], i)
     }
-    if (fileout != FALSE) {
+    if (outfile != FALSE) {
         dev.off()
     }
     colnames(finalndvi) = as.character(round(time(ndviMSG), 2))
@@ -450,7 +450,7 @@ function (TS, area, fileout = FALSE, Ystart, period = 36, fct = "mean",
 function (shapefile, shapedir, ndvidirectory, region, Ystart, 
     Yend, outfile = "TS.txt", outfile2 = "TS.pdf", outfile3 = FALSE, 
     shapeext = "shp", fct = "mean", SGfilter = TRUE, nSG = "5,5", 
-    DSG = 0, title = "NDVI time series", type = "VITO_CLIP", nb = 5) 
+    DSG = 0, title = "NDVI time series", type = "VITO_CLIP", nb = NULL) 
 {
     while (!tolower(shapeext) %in% c("shp", "kml")) {
         shapeext = readline(cat("Extension is not correct. Please choose between shp and kml. \n"))

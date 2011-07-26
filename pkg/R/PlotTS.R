@@ -24,12 +24,15 @@ function (TS, Ystart, period = 36, title = "NDVI Time Series",
 }
 "PlotTS" <-
 function (TS, outfile = FALSE, Ystart, period, title = "NDVI time series", 
-    nb = 5 )
+    nb = NULL )
 {
     liM = max(TS)+0.05
     lim = min(TS)
     if (outfile != FALSE) {
         pdf(outfile)
+    }
+    if (is.null(nb)) {
+    nb=ifelse(length(TS[, 1])>7, 5, length(TS[, 1]))
     }
     if (length(TS[, 1]) > nb & outfile == FALSE) {
         par(ask = TRUE)

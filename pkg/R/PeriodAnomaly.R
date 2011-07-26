@@ -45,12 +45,12 @@ function (ndvidirectory, region, Ystart, Yend, period, outname = "anomaly", oute
     Mean = apply(dat, 1, meanNA)
     tp = readpartGDAL(timetoMap(ndvidirectory, region, Ystart, 1, 1, type), xlim, ylim)
     tp$band1=Mean*10000
-    writeGDAL(tp, paste(outname, "mean.tif", 
+    writeGDAL(tp, paste(outname, "-meanPeriod", substr(as.character(Ystart), 3, 4), substr(as.character(Yend), 3, 4),".tif", 
             sep = ""), drivername = "GTiff", type = "Int16", 
             mvFlag = -32768)
     Sd = apply(dat, 1, sdNA)
     tp$band1=Sd*10000
-    writeGDAL(tp, paste(outname, "sd.tif", 
+    writeGDAL(tp, paste(outname, "-sdPeriod", substr(as.character(Ystart), 3, 4), substr(as.character(Yend), 3, 4),".tif", 
             sep = ""), drivername = "GTiff", type = "Int16", 
             mvFlag = -32768)
     cat("Saving maximum anomaly maps. \n")

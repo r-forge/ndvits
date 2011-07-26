@@ -23,4 +23,12 @@ Romain Frelat and Bruno Gerard
 \seealso{
 \code{\link{PlotTS}}
 }
+\examples{
+#loading the data
+data(SLPSAs_ts)
+
+#OverlayTS
+OverlayTS(SLPSAs_ts$ts, Ystart=SLPSAs_ts$Ystart, 
+    period=SLPSAs_ts$period)
+}
 \keyword{plot}
