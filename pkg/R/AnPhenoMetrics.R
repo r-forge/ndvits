@@ -261,7 +261,15 @@ function (TS, outfile, outgraph= FALSE, Ystart, period, SOSth = 0.5,
                 text(mean(c(EOS2, SOS2)), 0.03, paste("cumNDVI =", 
                   as.character(format(cumNDVI2, digits = 5)), 
                   sep = ""))
-                res = rbind(res, c(round(ml1,3), mld1, round(M1,3), Md1, round(ml2,3), mld2, round(M2,3), Md2, round(SOS1t,3), SOS1, round(EOS1t,3), EOS1, LOS1, round(cumNDVI1, 5), round(SOS2t,3), SOS2, round(EOS2t, 3), EOS2, LOS2, round(cumNDVI2, 5), round(cumNDVI1+cumNDVI2, 5)))
+                mld12=(st+mld1)%%period
+                Md12=(st+Md1)%%period
+                mld22=(st+mld2)%%period
+                Md22=(st+Md2)%%period
+                SOS12=(st+SOS1)%%period
+                EOS12=(st+EOS1)%%period
+                SOS22=(st+SOS2)%%period
+                EOS22=(st+EOS2)%%period
+                res = rbind(res, c(round(ml1,3), mld12, round(M1,3), Md12, round(ml2,3), mld22, round(M2,3), Md22, round(SOS1t,3), SOS12, round(EOS1t,3), EOS12, LOS1, round(cumNDVI1, 5), round(SOS2t,3), SOS22, round(EOS2t, 3), EOS22, LOS2, round(cumNDVI2, 5), round(cumNDVI1+cumNDVI2, 5)))
             }
             res = as.data.frame(res)
             names(res) = c("\tml1", "mld1", "M1", "Md1", "ml2", "mld2", "M2", "Md2", "SOS1t", "SOS1", "EOS1t", "EOS1", "LOS1", "cumNDVI1", "SOS2t", "SOS2", "EOS2t", "EOS2", "LOS2", "cumNDVI2", "cumNDVI-tot")

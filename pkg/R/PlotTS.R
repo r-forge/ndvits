@@ -12,8 +12,8 @@ function (TS, Ystart, period = 36, title = "NDVI Time Series",
             ylab = "NDVI", ylim = c(lim, liM), col = rainbow(1)[1])
         for (i in 2:length(TS[, 1])) lines(ts(TS[i, ], start = Ystart, 
             freq = period), col = rainbow(length(TS[, 1]))[i])
-        legend("bottomright", legend = rownames(TS), lwd = 2, 
-            col = rainbow(length(TS[, 1])))
+        #legend("bottomright", legend = rownames(TS), lwd = 2, 
+        #    col = rainbow(length(TS[, 1])))
     }
     else {
         stop("Error : only one time series, no overlay possible.")
